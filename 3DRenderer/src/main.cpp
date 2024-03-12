@@ -42,7 +42,7 @@ void setup()
 void process_input()
 {
 	SDL_Event event;
-
+	SDL_PollEvent(&event);
 	switch (event.type)
 	{
 		case SDL_QUIT:
@@ -67,6 +67,10 @@ void update()
 void render()
 {
 
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0,255);
+	SDL_RenderClear(renderer);
+
+	SDL_RenderPresent(renderer);
 
 }
 
