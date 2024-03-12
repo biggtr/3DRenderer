@@ -1,7 +1,9 @@
 #include <SDL.h>
 #include <iostream>
 
-SDL_Window* window;
+SDL_Window* window = nullptr;
+SDL_Renderer* renderer = nullptr;
+bool is_running = false;
 int WindowWidth = 800;
 int WindowHeight = 600;
 
@@ -21,14 +23,20 @@ bool initialize_window()
 		return false;
 	}
 	//create SDL Renderer
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (!renderer)
+	{
+		std::cerr << "Error Initializing The Renderer" << std::endl;
+		return false;
+	}
 
-	return true
+	return true;
 
 }
 
 int main(int argc,char*args[])
 {
-	initialize_window();
+	is_running = initialize_window();
 	std::cout << "Hello, world!";
 	return 0;
 }
