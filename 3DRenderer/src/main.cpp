@@ -16,6 +16,15 @@ bool initialize_window()
 		std::cerr << "Error Initializing SDL." << std::endl;
 		return false;
 	}   
+	//getting the fullscreen resulotion from displaymode and storing it in display struct 
+	SDL_DisplayMode display;
+	SDL_GetCurrentDisplayMode(0, &display);
+
+	WindowWidth = display.w;
+	WindowHeight = display.h;
+
+
+
 	//create SDL Window
 	window = SDL_CreateWindow("3D Renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight,SDL_WINDOW_BORDERLESS);
 
@@ -31,7 +40,7 @@ bool initialize_window()
 		std::cerr << "Error Initializing The Renderer" << std::endl;
 		return false;
 	}
-
+	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 	return true;
 
 }
