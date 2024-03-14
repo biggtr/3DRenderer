@@ -3,6 +3,7 @@
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
+uint32_t* color_buffer = nullptr;
 bool is_running = false;
 int WindowWidth = 800;
 int WindowHeight = 600;
@@ -36,6 +37,7 @@ bool initialize_window()
 
 void setup()
 {
+	color_buffer = new uint32_t[WindowWidth * WindowHeight];
 
 }
 
@@ -67,14 +69,20 @@ void update()
 void render()
 {
 
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0,255);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0,0);
 	SDL_RenderClear(renderer);
 
 	SDL_RenderPresent(renderer);
 
 }
 
-
+void destroy_window()
+{
+	delete []color_buffer;
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
 
 
 int main(int argc,char*args[])
@@ -89,6 +97,8 @@ int main(int argc,char*args[])
 		update();
 		render();
 	}
+
+	destroy_window();
 
 	std::cout << "Hello, world!";
 	return 0;
