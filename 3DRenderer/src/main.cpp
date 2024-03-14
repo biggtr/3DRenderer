@@ -75,18 +75,21 @@ void render_color_buffer()
 }
 void clear_color_buffer(uint32_t color)
 {
-	for (int i = 0; i < WindowHeight * WindowWidth; i++)
-	{
-		color_buffer[i] = color;
-	}
-
-	//for (int y = 0; y < WindowHeight; y++)
+	//time complixity O(n) but we dont use this because we're working with 2d array
+	//  in 1 dimension and we want to have much more control over the pixels
+	// 
+	//for (int i = 0; i < WindowHeight * WindowWidth; i++) 
 	//{
-	//	for (int x = 0; x < WindowWidth; x++)
-	//	{
-	//		color_buffer[WindowWidth * y + x] = color;
-	//	}
+	//	color_buffer[i] = color;
 	//}
+
+	for (int y = 0; y < WindowHeight; y++)
+	{
+		for (int x = 0; x < WindowWidth; x++)
+		{
+			color_buffer[WindowWidth * y + x] = color;
+		}
+	}
 }
 void render()
 {
