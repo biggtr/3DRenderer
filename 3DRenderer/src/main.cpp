@@ -3,6 +3,7 @@
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
+SDL_Texture* color_buffer_texture = nullptr;
 uint32_t* color_buffer = nullptr;
 bool is_running = false;
 int WindowWidth = 800;
@@ -39,6 +40,7 @@ void setup()
 {
 	color_buffer = new uint32_t[WindowWidth * WindowHeight];
 
+	color_buffer_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WindowWidth, WindowHeight);
 }
 
 void process_input()
@@ -65,13 +67,34 @@ void update()
 
 
 }
+void render_color_buffer()
+{
 
+	SDL_UpdateTexture(color_buffer_texture, nullptr, color_buffer, WindowWidth * sizeof(uint32_t));
+	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+}
+void clear_color_buffer(uint32_t color)
+{
+	for (int i = 0; i < WindowHeight * WindowWidth; i++)
+	{
+		color_buffer[i] = color;
+	}
+
+	//for (int y = 0; y < WindowHeight; y++)
+	//{
+	//	for (int x = 0; x < WindowWidth; x++)
+	//	{
+	//		color_buffer[WindowWidth * y + x] = color;
+	//	}
+	//}
+}
 void render()
 {
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0,0);
 	SDL_RenderClear(renderer);
-
+	clear_color_buffer(0xFFFFFF00);
+	render_color_buffer();
 	SDL_RenderPresent(renderer);
 
 }
