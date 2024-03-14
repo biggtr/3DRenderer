@@ -82,6 +82,18 @@ void render_color_buffer()
 	SDL_UpdateTexture(color_buffer_texture, nullptr, color_buffer, WindowWidth * sizeof(uint32_t));
 	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
 }
+
+void draw_grid()
+{
+	for (int y = 0; y < WindowHeight; y++)
+	{
+		for (int x = 0; x < WindowWidth; x++)
+		{
+			if(y % 15 == 0 || x %15 ==0)
+				color_buffer[WindowWidth * y + x] = 0xff333333;
+		}
+	}
+}
 void clear_color_buffer(uint32_t color)
 {
 	//time complixity O(n) but we dont use this because we're working with 2d array
@@ -105,8 +117,9 @@ void render()
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0,0);
 	SDL_RenderClear(renderer);
-	clear_color_buffer(0xFFFFFF00);
+	draw_grid();
 	render_color_buffer();
+	clear_color_buffer(0xFF000000);
 	SDL_RenderPresent(renderer);
 
 }
