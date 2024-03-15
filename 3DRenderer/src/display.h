@@ -17,6 +17,7 @@ bool initialize_window();
 void clear_color_buffer(uint32_t color);
 void draw_rectangle(int pos_x, int pos_y, int width, int height, uint32_t color);
 void draw_grid();
+void draw_pixel(int x, int y, uint32_t color);
 void render_color_buffer();
 
 void destroy_window();
