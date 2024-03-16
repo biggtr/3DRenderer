@@ -1,11 +1,15 @@
 #include "display.h"
 #include "vector.h"
 
+#define N_POINTS (9*9*9)
+
+
 bool is_running = false;
 
-int N_POINTS;
-vec3_t * cube_points = new vec3_t[N_POINTS];
+vec3_t cube_points[N_POINTS];
 
+vec2_t projected_points[N_POINTS];
+int fov_factor = 50;
 
 void setup()
 {
@@ -15,11 +19,11 @@ void setup()
 
 	int points_count = 0;
 	//initialize cube vector with values with 9 points in each direction x,y,z 
-	for (float x = -1; x <= 1; x += 0.22) // each side is 2 size from -1 to 1  = 2; and we want to fill each with 9 points so 2/9 = 0.22
+	for (float x = -1; x <= 1; x += 0.25) // each side is 2 size from -1 to 1  = 2; and we want to fill each with 9 points so 2/9 = 0.22
 	{
-		for (float y = -1; y <= 1; y += 0.22)
+		for (float y = -1; y <= 1; y += 0.25)
 		{
-			for (float z = -1; z <= 1; z += 0.22)
+			for (float z = -1; z <= 1; z += 0.25)
 			{
 				vec3_t new_point = { x,y,z };
 				cube_points[points_count++] = new_point;
@@ -46,22 +50,32 @@ void process_input()
 	}
 
 }
-
+vec2_t project(vec3_t point)
+{
+	vec2_t projected_point = { fov_factor * point.x, fov_factor * point.y };
+	return projected_point;
+}
 void update()
 {
-
+	for (int i = 0; i < N_POINTS; i++)
+	{
+		vec2_t projected_point = project(cube_points[i]);
+		projected_points[i] = projected_point;
+	}
 
 }
 
 void render()
 {
 
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0,0);
-	SDL_RenderClear(renderer);
 	clear_color_buffer(0xFF000000);
 	draw_grid();
-	draw_pixel(100, 100, 0xFFFF0000);
-	draw_rectangle(100,600,400,200,0xFFFF0000);
+	for (int i = 0; i < N_POINTS; i++)
+	{
+		vec2_t projected_point = projected_points[i];
+		draw_rectangle(projected_point.x + WindowWidth /2 ,projected_point.y + WindowHeight / 2 ,4,4,0xFFFF0000);
+		
+	}
 	render_color_buffer();
 	SDL_RenderPresent(renderer);
 

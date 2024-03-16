@@ -76,7 +76,7 @@ void draw_grid()
 }
 void draw_pixel(int x ,int y , uint32_t color)
 {
-	if (x < WindowWidth && y < WindowHeight)
+	if ( x >= 0 && x < WindowWidth && y >=0 && y < WindowHeight)
 		color_buffer[WindowWidth * y + x] = color;
 }
 void draw_rectangle(int pos_x, int pos_y, int width, int height, uint32_t color)
@@ -85,7 +85,7 @@ void draw_rectangle(int pos_x, int pos_y, int width, int height, uint32_t color)
 	{
 		for (int x = pos_x; x < width + pos_x; x++)
 		{
-			color_buffer[WindowWidth * y + x] = color;
+			draw_pixel(x, y, color);
 		}
 	}
 
