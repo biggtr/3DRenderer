@@ -2,6 +2,12 @@
 #include <SDL.h>
 #include <iostream>
 
+#define FPS 30 
+#define FRAME_TARGET_TIME  (1000/FPS)  // 1000 is how many millisecond in one second
+
+
+
+
 
 extern int WindowWidth;
 extern int WindowHeight;
@@ -9,8 +15,6 @@ extern SDL_Window* window;
 extern SDL_Renderer* renderer;
 extern uint32_t* color_buffer;
 extern SDL_Texture* color_buffer_texture;
-
-
 
 
 bool initialize_window();

@@ -13,7 +13,7 @@ vec2_t projected_points[N_POINTS];
 vec3_t camera_position{ 0,0,-5 };
 vec3_t cube_rotation{ 0,0,0 };
 int fov_factor = 640;
-
+int previous_frame_time;
 void setup()
 {
 	color_buffer = new uint32_t[WindowWidth * WindowHeight];
@@ -55,21 +55,25 @@ void process_input()
 }
 vec2_t project(vec3_t point)
 {
-	vec2_t projected_point = { (fov_factor * point.x) / point.z, (fov_factor * point.y) /point.z};
+	vec2_t projected_point = { (fov_factor * point.x) / point.z, (fov_factor * point.y) /point.z};  //fov_factor is for scaling 
 	return projected_point;
 }
 void update()
 {
-	cube_rotation.y += 0.001;
-	cube_rotation.x += 0.001;
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), previous_frame_time + FRAME_TARGET_TIME));
 
+	previous_frame_time = SDL_GetTicks();
+	cube_rotation.y += 0.01;
+	cube_rotation.x += 0.01;
+	cube_rotation.z += 0.01;
+
+	//transform the points  and then  project the point to the 2d plane(computer screen)
 	for (int i = 0; i < N_POINTS; i++)
 	{
-
 		vec3_t point = cube_points[i];
 		vec3_t transformed_point = vec3_rotate_y(point, cube_rotation.y);
 		transformed_point = vec3_rotate_x(transformed_point, cube_rotation.x);
-		transformed_point.z -= camera_position.z;
+		transformed_point.z -= camera_position.z;    // moving the camera from the z direction with camera_position.z units
 		vec2_t projected_point = project(transformed_point);
 		projected_points[i] = projected_point;
 	}
