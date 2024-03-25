@@ -3,12 +3,12 @@
 
 
 
-int WindowWidth = 800;
-int WindowHeight = 600;
+int windowWidth = 800;
+int windowHeight = 600;
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
-uint32_t* color_buffer = nullptr;
-SDL_Texture* color_buffer_texture = nullptr;
+uint32_t* colorBuffer = nullptr;
+SDL_Texture* colorBufferTexture = nullptr;
 
 bool initialize_window()
 {
@@ -21,13 +21,13 @@ bool initialize_window()
 	SDL_DisplayMode display;
 	SDL_GetCurrentDisplayMode(0, &display);
 
-	WindowWidth = display.w;
-	WindowHeight = display.h;
+	windowWidth = display.w;
+	windowHeight = display.h;
 
 
 
 	//create SDL Window
-	window = SDL_CreateWindow("3D Renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WindowWidth, WindowHeight, SDL_WINDOW_BORDERLESS);
+	window = SDL_CreateWindow("3D Renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_BORDERLESS);
 
 	if (!window)
 	{
@@ -51,7 +51,7 @@ bool initialize_window()
 
 void destroy_window()
 {
-	delete[]color_buffer;
+	delete[]colorBuffer;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -60,24 +60,24 @@ void destroy_window()
 void render_color_buffer()
 {
 
-	SDL_UpdateTexture(color_buffer_texture, nullptr, color_buffer, WindowWidth * sizeof(uint32_t));
-	SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
+	SDL_UpdateTexture(colorBufferTexture, nullptr, colorBuffer, windowWidth * sizeof(uint32_t));
+	SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
 }
 
 void draw_grid()
 {
-	for (int y = 0; y < WindowHeight; y += 15)
+	for (int y = 0; y < windowHeight; y += 15)
 	{
-		for (int x = 0; x < WindowWidth; x += 15)
+		for (int x = 0; x < windowWidth; x += 15)
 		{
-			color_buffer[WindowWidth * y + x] = 0xff333333;
+			colorBuffer[windowWidth * y + x] = 0xff333333;
 		}
 	}
 }
 void draw_pixel(int x ,int y , uint32_t color)
 {
-	if ( x >= 0 && x < WindowWidth && y >=0 && y < WindowHeight)
-		color_buffer[WindowWidth * y + x] = color;
+	if ( x >= 0 && x < windowWidth && y >=0 && y < windowHeight)
+		colorBuffer[windowWidth * y + x] = color;
 }
 void draw_rectangle(int pos_x, int pos_y, int width, int height, uint32_t color)
 {
@@ -100,11 +100,11 @@ void clear_color_buffer(uint32_t color)
 	//	color_buffer[i] = color;
 	//}
 
-	for (int y = 0; y < WindowHeight; y++)
+	for (int y = 0; y < windowHeight; y++)
 	{
-		for (int x = 0; x < WindowWidth; x++)
+		for (int x = 0; x < windowWidth; x++)
 		{
-			color_buffer[WindowWidth * y + x] = color;
+			colorBuffer[windowWidth * y + x] = color;
 		}
 	}
 }

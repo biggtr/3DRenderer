@@ -9,12 +9,12 @@
 
 
 
-extern int WindowWidth;
-extern int WindowHeight;
+extern int windowWidth;
+extern int windowHeight;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
-extern uint32_t* color_buffer;
-extern SDL_Texture* color_buffer_texture;
+extern uint32_t* colorBuffer;
+extern SDL_Texture* colorBufferTexture;
 
 
 bool initialize_window();
