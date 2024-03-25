@@ -6,6 +6,5 @@
 
 
 
-vec3_t meshVertices[N_MESH_VERTICES]; 
-
-face_t meshFaces[N_MESH_FACES];
+extern vec3_t meshVertices[N_MESH_VERTICES];
+extern face_t meshFaces[N_MESH_FACES];
