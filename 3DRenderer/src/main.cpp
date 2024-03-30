@@ -27,7 +27,7 @@ void setup()
 
 }
 
-void process_input()
+void processInput()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
@@ -47,8 +47,8 @@ void process_input()
 }
 vec2_t project(vec3_t point)
 {
-	vec2_t projected_point = { (fovFactor * point.x) / point.z, (fovFactor * point.y) /point.z};  //fov_factor is for scaling 
-	return projected_point;
+	vec2_t projectedPoint = { (fovFactor * point.x) / point.z, (fovFactor * point.y) /point.z};  //fov_factor is for scaling 
+	return projectedPoint;
 }
 void update()
 {
@@ -92,18 +92,18 @@ void update()
 
 void render()
 {
-	clear_color_buffer(0xFF000000);
-	draw_grid();
+	clearColorBuffer(0xFF000000);
+	drawGrid();
 	for (int i = 0; i < N_MESH_FACES; i++)
 	{
 		triangle_t triangle = trianglesToRender[i];
 		
-		draw_rectangle(triangle.points[0].x,triangle.points[0].y, 4, 4, 0xFFFF0000);
-		draw_rectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
-		draw_rectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
+		drawRectangle(triangle.points[0].x,triangle.points[0].y, 4, 4, 0xFFFF0000);
+		drawRectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
+		drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
 	}
-	render_color_buffer();
+	renderColorBuffer();
 	SDL_RenderPresent(renderer);
 }
 
@@ -111,18 +111,18 @@ void render()
 
 int main(int argc,char*args[])
 {
-	isRunning = initialize_window();
+	isRunning = initializeWindow();
 
 	setup();
 
 	while (isRunning)
 	{
-		process_input();
+		processInput();
 		update();
 		render();
 	}
 
-	destroy_window();
+	destroyWindow();
 
 	std::cout << "Hello, world!";
 	return 0;

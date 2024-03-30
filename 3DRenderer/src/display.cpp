@@ -10,7 +10,7 @@ SDL_Renderer* renderer = nullptr;
 uint32_t* colorBuffer = nullptr;
 SDL_Texture* colorBufferTexture = nullptr;
 
-bool initialize_window()
+bool initializeWindow()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)  // 0 means no errors
 	{
@@ -49,7 +49,7 @@ bool initialize_window()
 
 
 
-void destroy_window()
+void destroyWindow()
 {
 	delete[]colorBuffer;
 	SDL_DestroyRenderer(renderer);
@@ -57,14 +57,14 @@ void destroy_window()
 	SDL_Quit();
 }
 
-void render_color_buffer()
+void renderColorBuffer()
 {
 
 	SDL_UpdateTexture(colorBufferTexture, nullptr, colorBuffer, windowWidth * sizeof(uint32_t));
 	SDL_RenderCopy(renderer, colorBufferTexture, NULL, NULL);
 }
 
-void draw_grid()
+void drawGrid()
 {
 	for (int y = 0; y < windowHeight; y += 15)
 	{
@@ -74,23 +74,23 @@ void draw_grid()
 		}
 	}
 }
-void draw_pixel(int x ,int y , uint32_t color)
+void drawPixel(int x ,int y , uint32_t color)
 {
 	if ( x >= 0 && x < windowWidth && y >=0 && y < windowHeight)
 		colorBuffer[windowWidth * y + x] = color;
 }
-void draw_rectangle(int pos_x, int pos_y, int width, int height, uint32_t color)
+void drawRectangle(int pos_x, int pos_y, int width, int height, uint32_t color)
 {
 	for (int y = pos_y; y < height + pos_y; y++)
 	{
 		for (int x = pos_x; x < width + pos_x; x++)
 		{
-			draw_pixel(x, y, color);
+			drawPixel(x, y, color);
 		}
 	}
 
 }
-void clear_color_buffer(uint32_t color)
+void clearColorBuffer(uint32_t color)
 {
 	//time complixity O(n) but we dont use this because we're working with 2d array
 	//  in 1 dimension and we want to have much more control over the pixels
