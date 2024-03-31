@@ -25,6 +25,8 @@ void drawRectangle(int pos_x, int pos_y, int width, int height, uint32_t color);
 void drawGrid();
 void drawPixel(int x, int y, uint32_t color);
 void drawLine(int x0, int y0, int x1, int y1, uint32_t color);
+void drawTriangle(int x0, int y0, int x1, int y1,int x2,int y2, uint32_t color);
+
 void renderColorBuffer();
 
 void destroyWindow();

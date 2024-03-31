@@ -97,11 +97,12 @@ void render()
 	for (int i = 0; i < N_MESH_FACES; i++)
 	{
 		triangle_t triangle = trianglesToRender[i];
-		
-		drawRectangle(triangle.points[0].x,triangle.points[0].y, 4, 4, 0xFFFF0000);
+
+		drawRectangle(triangle.points[0].x, triangle.points[0].y, 4, 4, 0xFFFF0000);
 		drawRectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
 		drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
+		drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFF0000);
 	}
 	renderColorBuffer();
 	SDL_RenderPresent(renderer);
