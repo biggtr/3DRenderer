@@ -17,7 +17,7 @@ vec3_t cubeRotation{ 0,0,0 };
 int fovFactor = 640;
 int previousFrameTime;
 int timeToWait;
-bool isRunning = false;
+bool isRunning = false; 
 void setup()
 {
 	colorBuffer = new uint32_t[windowWidth * windowHeight];
