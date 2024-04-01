@@ -1,7 +1,7 @@
 #include "display.h"
 #include "vector.h"
 #include "mesh.h"
-
+#include <vector>
 
 
 
@@ -11,7 +11,7 @@
 //vec2_t projected_points[N_POINTS];
 
 
-triangle_t trianglesToRender[N_MESH_FACES];
+std::vector<triangle_t> trianglesToRender{};
 vec3_t cameraPosition{ 0,0,-5 };
 vec3_t cubeRotation{ 0,0,0 };
 int fovFactor = 640;
@@ -62,7 +62,7 @@ void update()
 	cubeRotation.x += 0.01;
 	cubeRotation.z += 0.01;
 
-
+	
 	for (int i = 0; i < N_MESH_FACES; i++)
 	{
 		face_t meshFace = meshFaces[i];
@@ -84,7 +84,7 @@ void update()
 
 			projectedTriangle.points[j] = projectedPoint;
 		}
-		trianglesToRender[i] = projectedTriangle;
+		trianglesToRender.push_back(projectedTriangle);
 	}
 	
 
@@ -94,7 +94,7 @@ void render()
 {
 	clearColorBuffer(0xFF000000);
 	drawGrid();
-	for (int i = 0; i < N_MESH_FACES; i++)
+	for (int i = 0; i < trianglesToRender.size(); i++)
 	{
 		triangle_t triangle = trianglesToRender[i];
 
@@ -104,6 +104,7 @@ void render()
 
 		drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFF0000);
 	}
+	trianglesToRender.clear();
 	renderColorBuffer();
 	SDL_RenderPresent(renderer);
 }
