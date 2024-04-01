@@ -1,7 +1,6 @@
 #include "display.h"
 #include "vector.h"
 #include "mesh.h"
-#include <vector>
 
 
 
@@ -24,7 +23,7 @@ void setup()
 
 	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, windowWidth, windowHeight);
 
-
+	loadCubeMeshData();
 }
 
 void processInput()
@@ -63,13 +62,13 @@ void update()
 	cubeRotation.z += 0.01;
 
 	
-	for (int i = 0; i < N_MESH_FACES; i++)
+	for (int i = 0; i < mesh.faces.size(); i++)
 	{
-		face_t meshFace = meshFaces[i];
+		face_t meshFace = mesh.faces[i];
 		vec3_t faceVertices[3];
-		faceVertices[0] = meshVertices[meshFace.a - 1];
-		faceVertices[1] = meshVertices[meshFace.b - 1];
-		faceVertices[2] = meshVertices[meshFace.c - 1];
+		faceVertices[0] = mesh.vertices[meshFace.a - 1];
+		faceVertices[1] = mesh.vertices[meshFace.b - 1];
+		faceVertices[2] = mesh.vertices[meshFace.c - 1];
 		triangle_t projectedTriangle;
 		for (int j = 0; j < 3; j++)
 		{

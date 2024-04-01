@@ -1,10 +1,21 @@
 #pragma once
 #include "vector.h"
 #include "triangle.h"
-#define N_MESH_VERTICES 8 
-#define N_MESH_FACES (6*2) // 6 faces in the cube times 2 triangles = 12
+#include <vector>
+#define N_CUBE_VERTICES 8 
+#define N_CUBE_FACES (6*2) // 6 faces in the cube times 2 triangles = 12
 
 
 
-extern vec3_t meshVertices[N_MESH_VERTICES];
-extern face_t meshFaces[N_MESH_FACES];
+extern vec3_t cubeVertices[N_CUBE_VERTICES];
+extern face_t cubeFaces[N_CUBE_FACES];
+
+struct mesh_t
+{
+	std::vector<vec3_t> vertices;
+	std::vector<face_t> faces;
+	vec3_t rotation;
+};
+extern mesh_t mesh;
+
+void loadCubeMeshData();
