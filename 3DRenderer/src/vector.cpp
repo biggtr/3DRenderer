@@ -9,6 +9,12 @@ float vec2Length(vec2_t v)
 	return sqrt((v.x*v.x) + (v.y * v.y));
 }
 
+float vec2Length(vec3_t v)
+{
+
+	return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z) );
+}
+
 vec3_t vec3RotateX(vec3_t point, float angle)
 {
 	vec3_t rotated_vector =
