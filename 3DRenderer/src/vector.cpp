@@ -1,9 +1,15 @@
-#include <math.h>
 #include "vector.h"
+#include <math.h>
 
 
 
-vec3_t vec3_rotate_x(vec3_t point, float angle)
+float vec2Length(vec2_t v)
+{
+	
+	return sqrt((v.x*v.x) + (v.y * v.y));
+}
+
+vec3_t vec3RotateX(vec3_t point, float angle)
 {
 	vec3_t rotated_vector =
 	{
@@ -16,7 +22,7 @@ vec3_t vec3_rotate_x(vec3_t point, float angle)
 }
 	
 
-vec3_t vec3_rotate_y(vec3_t point,float angle)
+vec3_t vec3RotateY(vec3_t point,float angle)
 {
 	vec3_t rotated_vector =
 	{
@@ -27,7 +33,7 @@ vec3_t vec3_rotate_y(vec3_t point,float angle)
 	return rotated_vector;
 }
 
-vec3_t vec3_rotate_z(vec3_t point, float angle)
+vec3_t vec3RotateZ(vec3_t point, float angle)
 {			
 	vec3_t rotated_vector =
 	{

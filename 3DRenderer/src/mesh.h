@@ -2,6 +2,11 @@
 #include "vector.h"
 #include "triangle.h"
 #include <vector>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 #define N_CUBE_VERTICES 8 
 #define N_CUBE_FACES (6*2) // 6 faces in the cube times 2 triangles = 12
 
@@ -19,3 +24,5 @@ struct mesh_t
 extern mesh_t mesh;
 
 void loadCubeMeshData();
+void loadObjFileData(std::string fileName);
+

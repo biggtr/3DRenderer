@@ -23,7 +23,8 @@ void setup()
 
 	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, windowWidth, windowHeight);
 
-	loadCubeMeshData();
+	//loadCubeMeshData();
+	loadObjFileData("./assets/monkey.obj");
 }
 
 void processInput()
@@ -57,8 +58,8 @@ void update()
 		SDL_Delay(timeToWait);
 	}
 	previousFrameTime = SDL_GetTicks();
-	cubeRotation.y += 0.01;
-	cubeRotation.x += 0.01;
+	cubeRotation.y -= 0.01;
+	cubeRotation.x -=0.01;
 	cubeRotation.z += 0.01;
 
 	
@@ -73,9 +74,9 @@ void update()
 		for (int j = 0; j < 3; j++)
 		{
 			vec3_t transformedVertex = faceVertices[j];
-			transformedVertex = vec3_rotate_x(transformedVertex, cubeRotation.x);
-			transformedVertex = vec3_rotate_y(transformedVertex, cubeRotation.y);
-			transformedVertex = vec3_rotate_z(transformedVertex, cubeRotation.z);
+			transformedVertex = vec3RotateX(transformedVertex, cubeRotation.x);
+			transformedVertex = vec3RotateY(transformedVertex, cubeRotation.y);
+			transformedVertex = vec3RotateZ(transformedVertex, cubeRotation.z);
 			transformedVertex.z -= cameraPosition.z;
 			vec2_t projectedPoint = project(transformedVertex);
 			projectedPoint.x += windowWidth / 2;
@@ -87,7 +88,7 @@ void update()
 	}
 	
 
-} 
+}
  
 void render()
 {
@@ -125,6 +126,5 @@ int main(int argc,char*args[])
 
 	destroyWindow();
 
-	std::cout << "Hello, world!";
 	return 0;
 }

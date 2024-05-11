@@ -4,18 +4,15 @@
 
 struct vec2_t
 {
-	float x;
-	float y;
+	float x, y;
 };
 
 struct vec3_t
 {
-	float x;
-	float y;
-	float z;
+	float x, y, z;
 };
 
-
-vec3_t vec3_rotate_x(vec3_t point, float angle);
-vec3_t vec3_rotate_y(vec3_t point, float angle);
-vec3_t vec3_rotate_z(vec3_t point, float angle);
+float vec2Length(vec2_t v);
+vec3_t vec3RotateX(vec3_t point, float angle);
+vec3_t vec3RotateY(vec3_t point, float angle);
+vec3_t vec3RotateZ(vec3_t point, float angle);
