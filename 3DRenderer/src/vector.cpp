@@ -16,6 +16,12 @@ vec2_t vec2Addition(vec2_t v1, vec2_t v2)
 	vec2_t newVec2 = { (v1.x + v2.x),(v1.y + v2.y) };
 	return newVec2;
 }
+vec2_t vec2Subtraction(vec2_t v1, vec2_t v2)
+{
+	vec2_t newVec2 = { (v1.x - v2.x),(v1.y - v2.y) };
+	return newVec2;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -33,6 +39,12 @@ vec3_t vec3Addition(vec3_t v1, vec3_t v2)
 	return newVec3;
 }
 
+
+vec3_t vec3Subtraction(vec3_t v1, vec3_t v2)
+{
+	vec3_t newVec3 = { (v1.x - v2.x),(v1.y - v2.y), (v1.z - v2.z) };
+	return newVec3;
+}
 
 
 vec3_t vec3RotateX(vec3_t point, float angle)
