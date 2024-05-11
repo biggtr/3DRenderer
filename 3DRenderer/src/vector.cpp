@@ -29,6 +29,11 @@ vec2_t vec2Mul(vec2_t v, float factor)
 	vec2_t newVec2 = { v.x * factor,v.y * factor };
 	return newVec2;
 }
+vec2_t vec2Div(vec2_t v, float factor)
+{
+	vec2_t newVec2 = { v.x / factor,v.y / factor };
+	return newVec2;
+}
 
 //////////////////////////////////////////////////////////////////////////
 //Implementation of Vector 3D functions
@@ -57,7 +62,11 @@ vec3_t vec3Mul(vec3_t v, float factor)
 	return newVec3;
 }
 
-
+vec3_t vec3Div(vec3_t v, float factor)
+{
+	vec3_t newVec3 = { v.x / factor,v.y / factor,v.z / factor };
+	return newVec3;
+}
 vec3_t vec3RotateX(vec3_t point, float angle)
 {
 	vec3_t rotated_vector =
