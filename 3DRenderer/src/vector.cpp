@@ -56,17 +56,30 @@ vec3_t vec3Subtraction(vec3_t v1, vec3_t v2)
 	vec3_t newVec3 = { (v1.x - v2.x),(v1.y - v2.y), (v1.z - v2.z) };
 	return newVec3;
 }
-vec3_t vec3Mul(vec3_t v, float factor)
+vec3_t vec3Multiplication(vec3_t v, float factor)
 {
 	vec3_t newVec3 = { v.x * factor,v.y * factor,v.z * factor };
 	return newVec3;
 }
 
-vec3_t vec3Div(vec3_t v, float factor)
+vec3_t vec3Division(vec3_t v, float factor)
 {
 	vec3_t newVec3 = { v.x / factor,v.y / factor,v.z / factor };
 	return newVec3;
 }
+
+vec3_t vec3CrossProduct(vec3_t firstVector, vec3_t SecondVector)
+{
+	vec3_t normalVector =
+	{
+		firstVector.y * SecondVector.z - firstVector.z * SecondVector.y,
+		firstVector.z * SecondVector.x - firstVector.x * SecondVector.z,
+		firstVector.x * SecondVector.y - firstVector.y * SecondVector.x,
+
+	};
+	return normalVector;
+}
+
 vec3_t vec3RotateX(vec3_t point, float angle)
 {
 	vec3_t rotated_vector =
