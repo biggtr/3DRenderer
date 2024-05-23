@@ -24,15 +24,20 @@ vec2_t vec2Subtraction(vec2_t v1, vec2_t v2)
 
 
 
-vec2_t vec2Mul(vec2_t v, float factor)
+vec2_t vec2Multiplication(vec2_t v, float factor)
 {
 	vec2_t newVec2 = { v.x * factor,v.y * factor };
 	return newVec2;
 }
-vec2_t vec2Div(vec2_t v, float factor)
+vec2_t vec2Division(vec2_t v, float factor)
 {
 	vec2_t newVec2 = { v.x / factor,v.y / factor };
 	return newVec2;
+}
+
+float vec2DotProduct(vec2_t firstVector, vec2_t SecondVector)
+{
+	return (firstVector.x * SecondVector.x) + (firstVector.y * SecondVector.y);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,6 +83,12 @@ vec3_t vec3CrossProduct(vec3_t firstVector, vec3_t SecondVector)
 
 	};
 	return normalVector;
+}
+
+float vec3DotProduct(vec3_t firstVector, vec3_t SecondVector)
+{
+	return (firstVector.x * SecondVector.x) + (firstVector.y * SecondVector.y) + (firstVector.z * SecondVector.z);
+
 }
 
 vec3_t vec3RotateX(vec3_t point, float angle)
