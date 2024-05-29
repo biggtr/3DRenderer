@@ -11,7 +11,7 @@
 
 
 std::vector<triangle_t> trianglesToRender{};
-vec3_t cameraPosition{ 0,0,-5 };
+vec3_t cameraPosition{ 0,0,0 };
 vec3_t cubeRotation{ 0,0,0 };
 int fovFactor = 640;
 int previousFrameTime;
@@ -24,7 +24,7 @@ void setup()
 	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, windowWidth, windowHeight);
 
 	//loadCubeMeshData();
-	loadObjFileData("./assets/monkey.obj");
+	loadObjFileData("./assets/cube.obj");
 }
 
 void processInput()
@@ -85,13 +85,36 @@ void update()
 			transformedVertex = vec3RotateZ(transformedVertex, cubeRotation.z);
 			
 			//translate the vertices away from camera
-			transformedVertex.z -= cameraPosition.z;
+			transformedVertex.z -= -5;
 
 			//save vertices in an array after applying transformation
 			transformedVertices[j] = transformedVertex;
 
 		}
 		// Check for back culling
+		vec3_t vectorA = transformedVertices[0];
+		vec3_t vectorB = transformedVertices[1];
+		vec3_t vectorC = transformedVertices[2];
+		
+		//Get difference between vector b-a , c-a
+		vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
+		vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
+
+		//Get normal value using the crossProduct between ab ac vectors
+		vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
+
+		//Get vector from a to camera position
+		vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
+
+		//Getting dot product between camera vector and normal 
+		float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
+
+
+		//Checks if dot product is less than 0 then skip and dont project
+		if (cameraRayDotProductValue < 0)
+		{
+			continue;
+		}
 
 
 		//Looping all 3 vertices to perform projection
