@@ -62,26 +62,47 @@ void update()
 	cubeRotation.x -=0.01;
 	cubeRotation.z += 0.01;
 
-	
+	// Looping thro all faces we have 
 	for (int i = 0; i < mesh.faces.size(); i++)
 	{
 		face_t meshFace = mesh.faces[i];
+
+		// Getting all vertices of each face
 		vec3_t faceVertices[3];
 		faceVertices[0] = mesh.vertices[meshFace.a - 1];
 		faceVertices[1] = mesh.vertices[meshFace.b - 1];
 		faceVertices[2] = mesh.vertices[meshFace.c - 1];
+
 		triangle_t projectedTriangle;
+
+		vec3_t transformedVertices[3];
+		// Applying transformation on each vertex of the face
 		for (int j = 0; j < 3; j++)
 		{
 			vec3_t transformedVertex = faceVertices[j];
 			transformedVertex = vec3RotateX(transformedVertex, cubeRotation.x);
 			transformedVertex = vec3RotateY(transformedVertex, cubeRotation.y);
 			transformedVertex = vec3RotateZ(transformedVertex, cubeRotation.z);
+			
+			//translate the vertices away from camera
 			transformedVertex.z -= cameraPosition.z;
-			vec2_t projectedPoint = project(transformedVertex);
+
+			//save vertices in an array after applying transformation
+			transformedVertices[j] = transformedVertex;
+
+		}
+		// Check for back culling
+
+
+		//Looping all 3 vertices to perform projection
+		for (int j = 0; j < 3; j++)
+		{
+			//Project the current vertex onto the screen
+			vec2_t projectedPoint = project(transformedVertices[j]);
+
+			//scale and moving the vertex point to the middle of the screen 
 			projectedPoint.x += windowWidth / 2;
 			projectedPoint.y += windowHeight/ 2;
-
 			projectedTriangle.points[j] = projectedPoint;
 		}
 		trianglesToRender.push_back(projectedTriangle);
