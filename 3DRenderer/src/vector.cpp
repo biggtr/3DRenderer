@@ -1,6 +1,5 @@
 #include "vector.h"
-#include <math.h>
-
+#include <iostream>
 
 //////////////////////////////////////////////////////////////////////////
 //Implementation of Vector 2D functions
@@ -8,7 +7,7 @@
 float vec2Length(vec2_t v)
 {
 	
-	return sqrt((v.x*v.x) + (v.y * v.y));
+	return std::sqrt((v.x*v.x) + (v.y * v.y));
 }
 
 vec2_t vec2Addition(vec2_t v1, vec2_t v2)
@@ -35,6 +34,7 @@ vec2_t vec2Division(vec2_t v, float factor)
 	return newVec2;
 }
 
+
 float vec2DotProduct(vec2_t firstVector, vec2_t SecondVector)
 {
 	return (firstVector.x * SecondVector.x) + (firstVector.y * SecondVector.y);
@@ -46,7 +46,7 @@ float vec2DotProduct(vec2_t firstVector, vec2_t SecondVector)
 float vec3Length(vec3_t v)
 {
 
-	return sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z) );
+	return std::sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z) );
 }
 
 vec3_t vec3Addition(vec3_t v1, vec3_t v2)
@@ -96,8 +96,8 @@ vec3_t vec3RotateX(vec3_t point, float angle)
 	vec3_t rotated_vector =
 	{
 		point.x,
-		point.y* cos(angle) - point.z * sin(angle),
-		point.y* sin(angle) + point.z * cos(angle),
+		point.y* std::cos(angle) - point.z * std::sin(angle),
+		point.y* std::sin(angle) + point.z * std::cos(angle),
 
 	};
 	return rotated_vector;
@@ -108,9 +108,9 @@ vec3_t vec3RotateY(vec3_t point,float angle)
 {
 	vec3_t rotated_vector =
 	{
-		point.x * cos(angle) - point.z * sin(angle),
+		point.x* std::cos(angle) - point.z * std::sin(angle),
 		point.y,
-		point.x * sin(angle) + point.z * cos(angle),
+		point.x * std::sin(angle) + point.z * std::cos(angle),
 	};
 	return rotated_vector;
 }
@@ -119,10 +119,20 @@ vec3_t vec3RotateZ(vec3_t point, float angle)
 {			
 	vec3_t rotated_vector =
 	{
-		point.x * cos(angle) - point.y * sin(angle),
-		point.x * sin(angle) + point.y * cos(angle),
+		point.x * std::cos(angle) - point.y * std::sin(angle),
+		point.x * std::sin(angle) + point.y * std::cos(angle),
 		point.z
 	};
 	return rotated_vector;
+}
+
+void vec3NormalizVector(vec3_t &vector)
+{
+	//getting lenth of vector using pythagoream theorem
+	float magnitude = std::sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+
+	vector.x/= magnitude;
+	vector.y/= magnitude;
+	vector.z/= magnitude;
 }
 

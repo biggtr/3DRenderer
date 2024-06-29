@@ -103,7 +103,10 @@ void update()
 		//Get normal value using the crossProduct between ab ac vectors
 		vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
 
-		//Get vector from a to camera position
+		//Normalize normal vector to get just the direction of the normal 
+		vec3NormalizVector(normal);
+
+		//Get vector from a to camera position #calculating distance between camera and position a 
 		vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
 
 		//Getting dot product between camera vector and normal 
@@ -138,6 +141,8 @@ void render()
 {
 	clearColorBuffer(0xFF000000);
 	drawGrid();
+
+	//renders all triangles that passed back face culling check
 	for (int i = 0; i < trianglesToRender.size(); i++)
 	{
 		triangle_t triangle = trianglesToRender[i];

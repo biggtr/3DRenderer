@@ -35,3 +35,4 @@ float  vec3DotProduct(vec3_t firstVector, vec3_t SecondVector);
 vec3_t vec3RotateX(vec3_t point, float angle);
 vec3_t vec3RotateY(vec3_t point, float angle);
 vec3_t vec3RotateZ(vec3_t point, float angle);
+void vec3NormalizVector(vec3_t &vector);
