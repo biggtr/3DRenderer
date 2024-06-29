@@ -1,5 +1,6 @@
 #pragma once
 #include "vector.h"
+#include <iostream>
 
 
 struct face_t 
@@ -13,3 +14,7 @@ struct triangle_t
 {
 	vec2_t points[3];
 };
+
+void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
+void fillFlatBottom(int x0, int y0, int x1, int y1, int Mx, int My);
+void fillFlatTop(int x0, int y0, int Mx, int My, int x2, int y2);

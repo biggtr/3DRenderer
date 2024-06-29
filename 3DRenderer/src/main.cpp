@@ -149,11 +149,15 @@ void render()
 	{
 		triangle_t triangle = trianglesToRender[i];
 
-		drawRectangle(triangle.points[0].x, triangle.points[0].y, 4, 4, 0xFFFF0000);
-		drawRectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
-		drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
+		////drawing 3 little dots expressing the triangle face 
+		//drawRectangle(triangle.points[0].x, triangle.points[0].y, 4, 4, 0xFFFF0000);
+		//drawRectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
+		//drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
-		drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFF0000);
+		//draws unfilled Triangle 
+		//drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFF0000);
+		
+		drawFilledTriangle(300, 100, 300, 400, 500, 700, 0xFFFF0000);
 	}
 	trianglesToRender.clear();
 	renderColorBuffer();
