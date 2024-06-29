@@ -1,10 +1,10 @@
 #include "triangle.h"
 
-void fillFlatBottom(int x0, int y0, int x1, int y1, int Mx, int My)
+void fillFlatBottom(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
 
 }
-void fillFlatTop(int x0, int y0, int Mx, int My, int x2, int y2)
+void fillFlatTop(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
 
 }
@@ -32,6 +32,6 @@ void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t
 	int Mx= (y1 - y0) * (x2 - x0) / (y2 - y0) + x0;
 	int My = y1;
 
-	fillFlatBottom(x0,y0,x1,y1,Mx,My);
+	fillFlatBottom(x0,y0,x1,y1,Mx,My, TODO);
 	fillFlatTop(x1,y1,Mx,My,x2,y2);
 }
