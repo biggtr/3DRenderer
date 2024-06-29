@@ -99,6 +99,8 @@ void update()
 		//Get difference between vector b-a , c-a
 		vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
 		vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
+		vec3NormalizVector(vectorAB);
+		vec3NormalizVector(vectorAC);
 
 		//Get normal value using the crossProduct between ab ac vectors
 		vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac

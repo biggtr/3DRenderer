@@ -128,7 +128,7 @@ vec3_t vec3RotateZ(vec3_t point, float angle)
 
 void vec3NormalizVector(vec3_t &vector)
 {
-	//getting lenth of vector using pythagoream theorem
+	//getting length of vector using Pythagorean theorem
 	float magnitude = std::sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
 
 	vector.x/= magnitude;
