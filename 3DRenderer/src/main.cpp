@@ -154,10 +154,11 @@ void render()
 		//drawRectangle(triangle.points[1].x, triangle.points[1].y, 4, 4, 0xFFFF0000);
 		//drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
-		//draws unfilled Triangle 
-		//drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFF0000);
+		//draws unfilled Triangle (wireframe)
+		drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF000000);
 		
-		drawFilledTriangle(300, 100, 50, 400, 500, 700, 0xFF00FF00);
+		//draws filled Triangle with color
+		drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFF00FF00);
 	}
 	trianglesToRender.clear();
 	renderColorBuffer();
