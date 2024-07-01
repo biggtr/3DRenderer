@@ -1,7 +1,7 @@
 #include "display.h"
 #include "vector.h"
 #include "mesh.h"
-
+#include "triangle.h"
 
 
 //const int N_POINTS (9*9*9)
