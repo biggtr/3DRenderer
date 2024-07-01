@@ -23,6 +23,6 @@ struct mesh_t
 };
 extern mesh_t mesh;
 
-void loadCubeMeshData();
+//void loadCubeMeshData();
 void loadObjFileData(std::string fileName);
 
