@@ -55,22 +55,26 @@ void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t
 		std::swap(x0, x1);
 	}
 
-	//calcualting midpoint of triangle 
-	int xMidPoint= (y1 - y0) * (x2 - x0) / (y2 - y0) + x0;
-	int yMidPoint = y1;
 
 	//check if we only have a flat bottom y1 == y2 if we do we draw only flat bottom
 	if (y1 == y2)
 	{
-		fillFlatBottom(x0, y0, x1, y1, xMidPoint, yMidPoint, color);
+		fillFlatBottom(x0, y0, x1, y1, x2, y2, color);
 	}
 	//check if we only have a flat top y0 == y1 if we do we draw only flat top
 	else if (y0 == y1)
 	{
 		
-		fillFlatTop(x1, y1, xMidPoint, yMidPoint, x2, y2, color);
+		fillFlatTop(x1, y1, x0, y0, x2, y2, color);
 
 	}
-	fillFlatBottom(x0,y0,x1,y1,xMidPoint,yMidPoint,color);
-	fillFlatTop(x1,y1,xMidPoint,yMidPoint,x2,y2,color);
+	else
+	{
+		//calcualting midpoint of triangle 
+		int xMidPoint = (y1 - y0) * (x2 - x0) / (y2 - y0) + x0;
+		int yMidPoint = y1;
+
+		fillFlatBottom(x0,y0,x1,y1,xMidPoint,yMidPoint,color);
+		fillFlatTop(x1,y1,xMidPoint,yMidPoint,x2,y2,color);
+	}
 }

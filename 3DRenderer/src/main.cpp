@@ -17,6 +17,7 @@ int fovFactor = 640;
 int previousFrameTime;
 int timeToWait;
 bool isRunning = false; 
+bool bIsWireframe = false;
 void setup()
 {
 	colorBuffer = new uint32_t[windowWidth * windowHeight];
@@ -39,8 +40,13 @@ void processInput()
 
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE)
+			{
 				isRunning = false;
+			}
+			if (event.key.keysym.sym == SDLK_w)
+				bIsWireframe = !bIsWireframe;
 			break;
+
 
 	}
 
@@ -155,7 +161,8 @@ void render()
 		//drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
 		//draws unfilled Triangle (wireframe)
-		drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF00000000);
+		if(bIsWireframe)
+			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF00000000);
 		
 		//draws filled Triangle with color
 		drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
