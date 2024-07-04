@@ -17,7 +17,8 @@ int fovFactor = 640;
 int previousFrameTime;
 int timeToWait;
 bool isRunning = false; 
-bool bIsWireframe = false;
+bool bIsWireframe = true;
+bool bIsFilledTriangle = true;
 void setup()
 {
 	colorBuffer = new uint32_t[windowWidth * windowHeight];
@@ -45,7 +46,11 @@ void processInput()
 			}
 			if (event.key.keysym.sym == SDLK_w)
 				bIsWireframe = !bIsWireframe;
+			if (event.key.keysym.sym == SDLK_f)
+				bIsFilledTriangle = !bIsFilledTriangle;
+			
 			break;
+
 
 
 	}
@@ -162,10 +167,11 @@ void render()
 
 		//draws unfilled Triangle (wireframe)
 		if(bIsWireframe)
-			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF00000000);
+			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF0000FF);
 		
 		//draws filled Triangle with color
-		drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
+		if(bIsFilledTriangle)
+			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
 	}
 	trianglesToRender.clear();
 	renderColorBuffer();
