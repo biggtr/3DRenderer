@@ -17,14 +17,17 @@ int fovFactor = 640;
 int previousFrameTime;
 int timeToWait;
 bool isRunning = false; 
-bool bIsWireframe = true;
-bool bIsFilledTriangle = true;
+RenderMethod renderMethod;
+CullingMethod cullingMethod;
 void setup()
 {
 	colorBuffer = new uint32_t[windowWidth * windowHeight];
 
 	colorBufferTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, windowWidth, windowHeight);
+	RenderMethod renderMethod = RenderMethod::WIREFRAME;
+	CullingMethod cullingMethod = CullingMethod::NONE;
 
+	
 	//loadCubeMeshData();
 	loadObjFileData("./assets/cube.obj");
 }
@@ -44,11 +47,19 @@ void processInput()
 			{
 				isRunning = false;
 			}
-			if (event.key.keysym.sym == SDLK_w)
-				bIsWireframe = !bIsWireframe;
-			if (event.key.keysym.sym == SDLK_f)
-				bIsFilledTriangle = !bIsFilledTriangle;
-			
+			if (event.key.keysym.sym == SDLK_1)
+				renderMethod = RenderMethod::WIREFRAME;
+			if (event.key.keysym.sym == SDLK_2)
+				renderMethod = RenderMethod::FILL_TRIANGLE;
+			if (event.key.keysym.sym == SDLK_3)
+				renderMethod = RenderMethod::FILL_TRIANGLE_WIRE;
+			if (event.key.keysym.sym == SDLK_b)
+			{	
+				cullingMethod = CullingMethod::BACKFACE_CULLING;
+			}
+			if (event.key.keysym.sym == SDLK_c)
+				cullingMethod = CullingMethod::NONE;
+
 			break;
 
 
@@ -102,36 +113,40 @@ void update()
 			transformedVertices[j] = transformedVertex;
 
 		}
-		// Check for back culling
-		vec3_t vectorA = transformedVertices[0];
-		vec3_t vectorB = transformedVertices[1];
-		vec3_t vectorC = transformedVertices[2];
-		
-		//Get difference between vector b-a , c-a
-		vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
-		vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
-		vec3NormalizVector(vectorAB);
-		vec3NormalizVector(vectorAC);
-
-		//Get normal value using the crossProduct between ab ac vectors
-		vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
-
-		//Normalize normal vector to get just the direction of the normal 
-		vec3NormalizVector(normal);
-
-		//Get vector from a to camera position #calculating distance between camera and position a 
-		vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
-
-		//Getting dot product between camera vector and normal 
-		float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
-
-
-		//Checks if dot product is less than 0 then skip and dont project
-		if (cameraRayDotProductValue < 0)
+		if (cullingMethod == CullingMethod::BACKFACE_CULLING)
 		{
-			continue;
-		}
+			// Check for back culling
+			vec3_t vectorA = transformedVertices[0];
+			vec3_t vectorB = transformedVertices[1];
+			vec3_t vectorC = transformedVertices[2];
 
+			//Get difference between vector b-a , c-a
+			vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
+			vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
+			vec3NormalizVector(vectorAB);
+			vec3NormalizVector(vectorAC);
+
+			//Get normal value using the crossProduct between ab ac vectors
+			vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
+
+			//Normalize normal vector to get just the direction of the normal 
+			vec3NormalizVector(normal);
+
+			//Get vector from a to camera position #calculating distance between camera and position a 
+			vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
+
+			//Getting dot product between camera vector and normal 
+			float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
+
+
+			//Checks if dot product is less than 0 then skip and dont project
+			if (cameraRayDotProductValue < 0)
+			{
+				continue;
+			}
+
+		}
+		
 
 		//Looping all 3 vertices to perform projection
 		for (int j = 0; j < 3; j++)
@@ -166,11 +181,11 @@ void render()
 		//drawRectangle(triangle.points[2].x, triangle.points[2].y, 4, 4, 0xFFFF0000);
 
 		//draws unfilled Triangle (wireframe)
-		if(bIsWireframe)
+		if(renderMethod == RenderMethod::WIREFRAME || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE)
 			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF0000FF);
 		
 		//draws filled Triangle with color
-		if(bIsFilledTriangle)
+		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )
 			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
 	}
 	trianglesToRender.clear();
