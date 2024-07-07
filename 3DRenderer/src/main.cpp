@@ -2,7 +2,7 @@
 #include "vector.h"
 #include "mesh.h"
 #include "triangle.h"
-
+#include <algorithm>
 
 //const int N_POINTS (9*9*9)
 //vec3_t cube_points[N_POINTS];
@@ -81,7 +81,7 @@ void update()
 	}
 	previousFrameTime = SDL_GetTicks();
 	cubeRotation.y -= 0.01;
-	cubeRotation.x -=0.01;
+	cubeRotation.x -= 0.01;
 	cubeRotation.z += 0.01;
 
 	// Looping thro all faces we have 
@@ -105,7 +105,7 @@ void update()
 			transformedVertex = vec3RotateX(transformedVertex, cubeRotation.x);
 			transformedVertex = vec3RotateY(transformedVertex, cubeRotation.y);
 			transformedVertex = vec3RotateZ(transformedVertex, cubeRotation.z);
-			
+
 			//translate the vertices away from camera
 			transformedVertex.z -= -5;
 
@@ -146,7 +146,7 @@ void update()
 			}
 
 		}
-		
+
 
 		//Looping all 3 vertices to perform projection
 		for (int j = 0; j < 3; j++)
@@ -156,15 +156,22 @@ void update()
 
 			//scale and moving the vertex point to the middle of the screen 
 			projectedPoint.x += windowWidth / 2;
-			projectedPoint.y += windowHeight/ 2;
+			projectedPoint.y += windowHeight / 2;
 			projectedTriangle.points[j] = projectedPoint;
 		}
-		trianglesToRender.push_back(projectedTriangle);
-	}
-	
+		//getting the average of all of the z vertices to sort triangles in ascending order
+		projectedTriangle.avgDepth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3;
 
+		trianglesToRender.push_back(projectedTriangle);
+
+		//sorting triangles based on z axis (Depth) to render triangles from back to front 
+		std::sort(trianglesToRender.begin(), trianglesToRender.end(), [](const triangle_t& a, const triangle_t& b) {
+			return a.avgDepth < b.avgDepth;
+			});
+
+
+	}
 }
- 
 void render()
 {
 	clearColorBuffer(0xFF000000);
