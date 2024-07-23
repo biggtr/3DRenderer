@@ -19,7 +19,9 @@ struct mesh_t
 {
 	std::vector<vec3_t> vertices;
 	std::vector<face_t> faces;
-	vec3_t rotation;
+	vec3_t rotation{};
+	vec3_t scale{};
+	vec3_t translation{};
 };
 extern mesh_t mesh;
 

@@ -7,3 +7,4 @@ struct mat4_t
 };
 
 mat4_t mat4Identity();
+mat4_t scaleMatrix(float xValue, float yValue, float zValue);
