@@ -136,3 +136,15 @@ void vec3NormalizVector(vec3_t &vector)
 	vector.z/= magnitude;
 }
 
+vec4_t vec4FromVec3(vec3_t vector)
+{
+	vec4_t result = { vector.x,vector.y,vector.z,1.0f };
+	return result;
+}
+
+vec3_t vec3FromVec4(vec4_t vector)
+{
+	vec3_t result = { vector.x,vector.y,vector.z};
+	return result;
+}
+

@@ -1,5 +1,5 @@
 #include "matrix.h"
-
+#include "vector.h"
 
 
 mat4_t mat4Identity()
@@ -17,7 +17,7 @@ mat4_t mat4Identity()
 }
 
 
-mat4_t scaleMatrix(float xValue, float yValue, float zValue)
+mat4_t makeScaleMatrix(float xValue, float yValue, float zValue)
 {
 	//making the scale matrix so we can use it to scale objects in future 
 	mat4_t scaleMatrix = mat4Identity();
@@ -26,5 +26,15 @@ mat4_t scaleMatrix(float xValue, float yValue, float zValue)
 	scaleMatrix.m[2][2] = zValue;
 
 	return scaleMatrix;
+}
+
+vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)
+{
+	vec4_t resultingVector;
+	resultingVector.x = matrix.m[0][0] * vector.x + matrix.m[0][1] * vector.y + matrix.m[0][2] * vector.z + matrix.m[0][3] * vector.w;
+	resultingVector.y = matrix.m[1][0] * vector.x + matrix.m[1][1] * vector.y + matrix.m[1][2] * vector.z + matrix.m[1][3] * vector.w;
+	resultingVector.z = matrix.m[2][0] * vector.x + matrix.m[2][1] * vector.y + matrix.m[2][2] * vector.z + matrix.m[2][3] * vector.w;
+	resultingVector.w = matrix.m[3][0] * vector.x + matrix.m[3][1] * vector.y + matrix.m[3][2] * vector.z + matrix.m[3][3] * vector.w;
+	return resultingVector;
 }
 

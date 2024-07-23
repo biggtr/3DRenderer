@@ -3,7 +3,7 @@
 #include "mesh.h"
 #include "triangle.h"
 #include <algorithm>
-
+#include "matrix.h"
 //const int N_POINTS (9*9*9)
 //vec3_t cube_points[N_POINTS];
 //
@@ -81,11 +81,16 @@ void update()
 	}
 	previousFrameTime = SDL_GetTicks();
 
-	//increamenting rotation value of the mesh every frame
+	//incrementing rotation value of the mesh every frame
 	mesh.rotation.x += 0.01;
 	mesh.rotation.y += 0.01;
 	mesh.rotation.z += 0.01;
 
+	//incrementing scale value of mesh every frame
+	mesh.scale.x += 0.001;
+
+	//making scale matrix (used to scale objs)
+	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
 
 	// Looping thro all faces we have 
 	for (int i = 0; i < mesh.faces.size(); i++)
@@ -105,6 +110,11 @@ void update()
 		for (int j = 0; j < 3; j++)
 		{
 			vec3_t transformedVertex = faceVertices[j];
+
+			//use scale matrix to scale vertices
+			
+
+
 			transformedVertex = vec3RotateX(transformedVertex, mesh.rotation.x);
 			transformedVertex = vec3RotateY(transformedVertex, mesh.rotation.y);
 			transformedVertex = vec3RotateZ(transformedVertex, mesh.rotation.z);
