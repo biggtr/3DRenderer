@@ -82,12 +82,10 @@ void update()
 	previousFrameTime = SDL_GetTicks();
 
 	//incrementing rotation value of the mesh every frame
-	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.01;
-	mesh.rotation.z += 0.01;
+	
 
 	//incrementing scale value of mesh every frame
-	mesh.scale.x += 0.001;
+	mesh.scale.x += 0.01;
 
 	//making scale matrix (used to scale objs)
 	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
@@ -105,19 +103,15 @@ void update()
 
 		triangle_t projectedTriangle;
 
-		vec3_t transformedVertices[3];
+		vec4_t transformedVertices[3];
 		// Applying transformation on each vertex of the face
 		for (int j = 0; j < 3; j++)
 		{
-			vec3_t transformedVertex = faceVertices[j];
+			vec4_t transformedVertex = vec4FromVec3(faceVertices[j]);
 
 			//use scale matrix to scale vertices
-			
+			transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
 
-
-			transformedVertex = vec3RotateX(transformedVertex, mesh.rotation.x);
-			transformedVertex = vec3RotateY(transformedVertex, mesh.rotation.y);
-			transformedVertex = vec3RotateZ(transformedVertex, mesh.rotation.z);
 
 			//translate the vertices away from camera
 			transformedVertex.z -= -5;
@@ -129,9 +123,9 @@ void update()
 		if (cullingMethod == CullingMethod::BACKFACE_CULLING)
 		{
 			// Check for back culling
-			vec3_t vectorA = transformedVertices[0];
-			vec3_t vectorB = transformedVertices[1];
-			vec3_t vectorC = transformedVertices[2];
+			vec3_t vectorA = vec3FromVec4(transformedVertices[0]);
+			vec3_t vectorB = vec3FromVec4(transformedVertices[1]);
+			vec3_t vectorC = vec3FromVec4(transformedVertices[2]);
 
 			//Get difference between vector b-a , c-a
 			vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
@@ -165,7 +159,7 @@ void update()
 		for (int j = 0; j < 3; j++)
 		{
 			//Project the current vertex onto the screen
-			vec2_t projectedPoint = project(transformedVertices[j]);
+			vec2_t projectedPoint = project(vec3FromVec4(transformedVertices[j]));
 
 			//scale and moving the vertex point to the middle of the screen 
 			projectedPoint.x += windowWidth / 2;
