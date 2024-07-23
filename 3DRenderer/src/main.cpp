@@ -80,9 +80,12 @@ void update()
 		SDL_Delay(timeToWait);
 	}
 	previousFrameTime = SDL_GetTicks();
-	cubeRotation.y -= 0.01;
-	cubeRotation.x -= 0.01;
-	cubeRotation.z += 0.01;
+
+	//increamenting rotation value of the mesh every frame
+	mesh.rotation.x += 0.01;
+	mesh.rotation.y += 0.01;
+	mesh.rotation.z += 0.01;
+
 
 	// Looping thro all faces we have 
 	for (int i = 0; i < mesh.faces.size(); i++)
@@ -102,9 +105,9 @@ void update()
 		for (int j = 0; j < 3; j++)
 		{
 			vec3_t transformedVertex = faceVertices[j];
-			transformedVertex = vec3RotateX(transformedVertex, cubeRotation.x);
-			transformedVertex = vec3RotateY(transformedVertex, cubeRotation.y);
-			transformedVertex = vec3RotateZ(transformedVertex, cubeRotation.z);
+			transformedVertex = vec3RotateX(transformedVertex, mesh.rotation.x);
+			transformedVertex = vec3RotateY(transformedVertex, mesh.rotation.y);
+			transformedVertex = vec3RotateZ(transformedVertex, mesh.rotation.z);
 
 			//translate the vertices away from camera
 			transformedVertex.z -= -5;
