@@ -37,14 +37,34 @@ mat4_t makeTranslationMatrix(float xValue, float yValue, float zValue)
 	return translationMatrix;
 }
 
-mat4_t makeRotationMatrixInX(float angel)
+mat4_t makeRotationMatrixInX(float angle)
 {
 	mat4_t xRotationMatrix = mat4Identity();
-	xRotationMatrix.m[1][1] = std::cos(angel);
-	xRotationMatrix.m[1][2] = -std::sin(angel);
-	xRotationMatrix.m[2][1] = sin(angel);
-	xRotationMatrix.m[2][2] = std::cos(angel);
+	xRotationMatrix.m[1][1] = std::cos(angle);
+	xRotationMatrix.m[1][2] = -std::sin(angle);
+	xRotationMatrix.m[2][1] = sin(angle);
+	xRotationMatrix.m[2][2] = std::cos(angle);
 	return xRotationMatrix;
+}
+
+mat4_t makeRotationMatrixInY(float angle)
+{
+	mat4_t yRotationMatrix = mat4Identity();
+	yRotationMatrix.m[0][0] = std::cos(angle);
+	yRotationMatrix.m[0][2] = std::sin(angle);
+	yRotationMatrix.m[2][0] = -std::sin(angle);
+	yRotationMatrix.m[2][2] = std::cos(angle);
+	return yRotationMatrix;
+}
+
+mat4_t makeRotationMatrixInZ(float angle)
+{
+	mat4_t zRotationMatrix = mat4Identity();
+	zRotationMatrix.m[0][0] = std::cos(angle);
+	zRotationMatrix.m[0][1] = -std::sin(angle);
+	zRotationMatrix.m[1][0] = std::sin(angle);
+	zRotationMatrix.m[1][1] = std::cos(angle);
+	return zRotationMatrix;
 }
 
 vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)

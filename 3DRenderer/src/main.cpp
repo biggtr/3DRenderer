@@ -91,12 +91,24 @@ void update()
 	mesh.translation.x += 0.01;
 	mesh.translation.z = -25;
 
+	//Changing the rotation of the mesh 
+	mesh.rotation.x += 0.01;
+	mesh.rotation.y += 0.01;
+	mesh.rotation.z += 0.01;
+
+	
 	//making scale matrix (used to scale objects)
 	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
+
+	//Making rotation matrix from all the axes the will be multiplied with vertices to change their rotation
+	mat4_t rotationMatrixInX = makeRotationMatrixInX(mesh.rotation.x);
+	mat4_t rotationMatrixInY = makeRotationMatrixInY(mesh.rotation.y);
+	mat4_t rotationMatrixInZ = makeRotationMatrixInZ(mesh.rotation.z);
 
 	//making translation matrix that will be multiplied with vertices to change their position
 	mat4_t translationMatrix = makeTranslationMatrix(mesh.translation.x, mesh.translation.y, mesh.translation.z);
 
+	
 	// Looping through all faces we have 
 	for (int i = 0; i < mesh.faces.size(); i++)
 	{
@@ -118,10 +130,16 @@ void update()
 
 			//use scale matrix to scale vertices
 			//transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
+			
+			//Multiplying rotation matrix by vertices to change their rotation
+			transformedVertex = multiplyMatrixVector(rotationMatrixInX, transformedVertex);
+			transformedVertex = multiplyMatrixVector(rotationMatrixInY, transformedVertex);
+			transformedVertex = multiplyMatrixVector(rotationMatrixInZ, transformedVertex);
 
 			//changing the vertices' position with multiplying translation matrix by the vertices
 			transformedVertex = multiplyMatrixVector(translationMatrix, transformedVertex);
 
+			
 
 			//save vertices in an array after applying transformation
 			transformedVertices[j] = transformedVertex;
