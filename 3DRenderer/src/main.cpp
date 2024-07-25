@@ -85,7 +85,8 @@ void update()
 	
 
 	//incrementing scale value of mesh every frame
-	mesh.scale.x += 0.01;
+	mesh.scale.x += 0.02;
+	mesh.scale.y += 0.01;
 
 	//making scale matrix (used to scale objs)
 	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
