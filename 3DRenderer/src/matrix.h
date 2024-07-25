@@ -12,4 +12,6 @@ struct mat4_t
 mat4_t mat4Identity();
 mat4_t makeScaleMatrix(float xValue, float yValue, float zValue);
 mat4_t makeTranslationMatrix(float xValue, float yValue, float zValue);
+mat4_t makeRotationMatrix(float xValue, float yValue, float zValue);
+
 vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector);

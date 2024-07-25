@@ -81,13 +81,15 @@ void update()
 	}
 	previousFrameTime = SDL_GetTicks();
 
-	//incrementing rotation value of the mesh every frame
 	
 
-	//incrementing scale value of mesh every frame
+	//changing the scale of the mesh
 	mesh.scale.x += 0.02;
 	mesh.scale.y += 0.01;
+
+	//changing the translation of the mesh
 	mesh.translation.x += 0.01;
+	mesh.translation.z = -25;
 
 	//making scale matrix (used to scale objects)
 	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
@@ -115,13 +117,11 @@ void update()
 			vec4_t transformedVertex = vec4FromVec3(faceVertices[j]);
 
 			//use scale matrix to scale vertices
-			transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
+			//transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
 
 			//changing the vertices' position with multiplying translation matrix by the vertices
 			transformedVertex = multiplyMatrixVector(translationMatrix, transformedVertex);
 
-			//translate the vertices away from camera
-			transformedVertex.z -= -5;
 
 			//save vertices in an array after applying transformation
 			transformedVertices[j] = transformedVertex;
