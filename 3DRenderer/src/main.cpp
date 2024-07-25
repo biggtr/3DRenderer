@@ -87,11 +87,15 @@ void update()
 	//incrementing scale value of mesh every frame
 	mesh.scale.x += 0.02;
 	mesh.scale.y += 0.01;
+	mesh.translation.x += 0.01;
 
-	//making scale matrix (used to scale objs)
+	//making scale matrix (used to scale objects)
 	mat4_t scaleMatrix = makeScaleMatrix(mesh.scale.x, mesh.scale.y, mesh.scale.z);
 
-	// Looping thro all faces we have 
+	//making translation matrix that will be multiplied with vertices to change their position
+	mat4_t translationMatrix = makeTranslationMatrix(mesh.translation.x, mesh.translation.y, mesh.translation.z);
+
+	// Looping through all faces we have 
 	for (int i = 0; i < mesh.faces.size(); i++)
 	{
 		face_t meshFace = mesh.faces[i];
@@ -113,6 +117,8 @@ void update()
 			//use scale matrix to scale vertices
 			transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
 
+			//changing the vertices' position with multiplying translation matrix by the vertices
+			transformedVertex = multiplyMatrixVector(translationMatrix, transformedVertex);
 
 			//translate the vertices away from camera
 			transformedVertex.z -= -5;

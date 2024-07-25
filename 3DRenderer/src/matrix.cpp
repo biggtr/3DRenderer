@@ -32,8 +32,8 @@ mat4_t makeTranslationMatrix(float xValue, float yValue, float zValue)
 {
 	mat4_t translationMatrix = mat4Identity();
 	translationMatrix.m[0][3] = xValue;
-	translationMatrix.m[2][3] = yValue;
-	translationMatrix.m[3][3] = zValue;
+	translationMatrix.m[1][3] = yValue;
+	translationMatrix.m[2][3] = zValue;
 	return translationMatrix;
 }
 
