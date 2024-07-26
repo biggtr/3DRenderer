@@ -77,3 +77,16 @@ vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)
 	return resultingVector;
 }
 
+mat4_t matrix4MultiplyMatrix4(mat4_t firstMatrix, mat4_t secondMatrix)
+{
+	mat4_t resultingMatrix;
+	for (int row{}; row < 4; row++)
+	{
+		for (int col{}; col < 4; col++)
+		{
+			resultingMatrix.m[row][col] = firstMatrix.m[row][0] * secondMatrix.m[0][col] + firstMatrix.m[row][1] * secondMatrix.m[1][col] + firstMatrix.m[row][2] * secondMatrix.m[2][col] + firstMatrix.m[row][3] * secondMatrix.m[3][col];
+		}
+	}
+	return resultingMatrix;
+}
+

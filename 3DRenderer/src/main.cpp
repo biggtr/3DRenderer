@@ -128,19 +128,16 @@ void update()
 		{
 			vec4_t transformedVertex = vec4FromVec3(faceVertices[j]);
 
-			//use scale matrix to scale vertices
-			//transformedVertex = multiplyMatrixVector(scaleMatrix, transformedVertex);
 			
-			//Multiplying rotation matrix by vertices to change their rotation
-			transformedVertex = multiplyMatrixVector(rotationMatrixInX, transformedVertex);
-			transformedVertex = multiplyMatrixVector(rotationMatrixInY, transformedVertex);
-			transformedVertex = multiplyMatrixVector(rotationMatrixInZ, transformedVertex);
+			//multiplying all matrices with world identity to get the world matrix(order matters)
+			mat4_t worldMatrix = mat4Identity();
+			worldMatrix = matrix4MultiplyMatrix4(scaleMatrix, worldMatrix);
+			worldMatrix = matrix4MultiplyMatrix4(rotationMatrixInX, worldMatrix);
+			worldMatrix = matrix4MultiplyMatrix4(rotationMatrixInY, worldMatrix);
+			worldMatrix = matrix4MultiplyMatrix4(rotationMatrixInZ, worldMatrix);
+			worldMatrix = matrix4MultiplyMatrix4(translationMatrix, worldMatrix);
 
-			//changing the vertices' position with multiplying translation matrix by the vertices
-			transformedVertex = multiplyMatrixVector(translationMatrix, transformedVertex);
-
-			
-
+			transformedVertex = multiplyMatrixVector(worldMatrix, transformedVertex);
 			//save vertices in an array after applying transformation
 			transformedVertices[j] = transformedVertex;
 

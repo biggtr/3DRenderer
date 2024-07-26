@@ -17,3 +17,4 @@ mat4_t makeRotationMatrixInY(float angle);
 mat4_t makeRotationMatrixInZ(float angle);
 
 vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector);
+mat4_t matrix4MultiplyMatrix4(mat4_t firstMatrix, mat4_t secondMatrix);
