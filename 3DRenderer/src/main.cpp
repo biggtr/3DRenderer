@@ -4,6 +4,7 @@
 #include "triangle.h"
 #include <algorithm>
 #include "matrix.h"
+#include <math.h>
 //const int N_POINTS (9*9*9)
 //vec3_t cube_points[N_POINTS];
 //
@@ -12,11 +13,11 @@
 
 std::vector<triangle_t> trianglesToRender{};
 vec3_t cameraPosition{ 0,0,0 };
-vec3_t cubeRotation{ 0,0,0 };
-int fovFactor = 640;
+
 int previousFrameTime;
 int timeToWait;
 bool isRunning = false; 
+mat4_t perspectiveProjectionMatrix;
 RenderMethod renderMethod;
 CullingMethod cullingMethod;
 void setup()
@@ -27,7 +28,13 @@ void setup()
 	RenderMethod renderMethod = RenderMethod::WIREFRAME;
 	CullingMethod cullingMethod = CullingMethod::NONE;
 
-	
+	float fovFactor = M_PI / 3;
+	float zNear = 0.1f;
+	float zFar = 100.f;
+	float aspectRation = (float)windowHeight / (float)windowWidth;
+
+	//make perspectiveProjectionMatrix that will be multiplied with vertices to project the vertices
+	perspectiveProjectionMatrix = makePerspectiveProjectionMatrix(aspectRation, fovFactor, zNear, zFar);
 	//loadCubeMeshData();
 	loadObjFileData("./assets/cube.obj");
 }
@@ -67,11 +74,7 @@ void processInput()
 	}
 
 }
-vec2_t project(vec3_t point)
-{
-	vec2_t projectedPoint = { (fovFactor * point.x) / point.z, (fovFactor * point.y) /point.z};  //fov_factor is for scaling 
-	return projectedPoint;
-}
+
 void update()
 {
 	timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - previousFrameTime); // (SDL_GetTicks() - previous_frame_time) tells me how many seconds the frame took to process and store it in time to wait 
@@ -84,18 +87,19 @@ void update()
 	
 
 	//changing the scale of the mesh
-	mesh.scale.x += 0.02;
-	mesh.scale.y += 0.01;
+	mesh.scale.x = 5.f;
+	mesh.scale.y = 5.f;
 	mesh.scale.z =  5.f;
-
-	//changing the translation of the mesh
-	mesh.translation.x += 0.01;
-	mesh.translation.z = -25;
 
 	//Changing the rotation of the mesh 
 	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.01;
-	mesh.rotation.z += 0.01;
+	//mesh.rotation.y += 0.01;
+	//mesh.rotation.z += 0.01;
+
+	//changing the translation of the mesh
+	/*mesh.translation.x += 0.01;*/
+	mesh.translation.z = 25;
+
 
 	
 	//making scale matrix (used to scale objects)
@@ -121,7 +125,6 @@ void update()
 		faceVertices[1] = mesh.vertices[meshFace.b - 1];
 		faceVertices[2] = mesh.vertices[meshFace.c - 1];
 
-		triangle_t projectedTriangle;
 
 		vec4_t transformedVertices[3];
 		// Applying transformation on each vertex of the face
@@ -176,19 +179,28 @@ void update()
 			}
 
 		}
+		triangle_t projectedTriangle;
 
-
+		vec4_t projectedPoints[3];
 		//Looping all 3 vertices to perform projection
 		for (int j = 0; j < 3; j++)
 		{
 			//Project the current vertex onto the screen
-			vec2_t projectedPoint = project(vec3FromVec4(transformedVertices[j]));
+			projectedPoints[j] = matrix4MultiplyVector4Projection(perspectiveProjectionMatrix, transformedVertices[j]);
+			
+			//scaling point into the viewport
+			projectedPoints[j].x *= (windowWidth / 2.f);
+			projectedPoints[j].y *= (windowHeight / 2.f);
 
-			//scale and moving the vertex point to the middle of the screen 
-			projectedPoint.x += windowWidth / 2;
-			projectedPoint.y += windowHeight / 2;
-			projectedTriangle.points[j] = projectedPoint;
+			//Translate the vertex point to the middle of the screen 
+			projectedPoints[j].x += (windowWidth / 2.f);
+			projectedPoints[j].y += (windowHeight / 2.f);
+		
 		}
+		projectedTriangle.points[0] = {projectedPoints[0].x,projectedPoints[0].y};
+		projectedTriangle.points[1] = { projectedPoints[1].x,projectedPoints[1].y };
+		projectedTriangle.points[2] = { projectedPoints[2].x,projectedPoints[2].y };
+
 		//getting the average of all of the z vertices to sort triangles in ascending order
 		projectedTriangle.avgDepth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3;
 
