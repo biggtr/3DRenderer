@@ -138,7 +138,7 @@ void update()
 			worldMatrix = matrix4MultiplyMatrix4(rotationMatrixInZ, worldMatrix);
 			worldMatrix = matrix4MultiplyMatrix4(translationMatrix, worldMatrix);
 
-			transformedVertex = multiplyMatrixVector(worldMatrix, transformedVertex);
+			transformedVertex = matrix4MultiplyVector4(worldMatrix, transformedVertex);
 			//save vertices in an array after applying transformation
 			transformedVertices[j] = transformedVertex;
 

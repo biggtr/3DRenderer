@@ -16,5 +16,7 @@ mat4_t makeRotationMatrixInX(float angle);
 mat4_t makeRotationMatrixInY(float angle);
 mat4_t makeRotationMatrixInZ(float angle);
 mat4_t makePerspectiveProjectionMatrix(float aspectRatio, float fieldOfView, float zNear, float zFar);
-vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector);
+
+vec4_t matrix4MultiplyVector4(mat4_t matrix, vec4_t vector);
+vec4_t matrix4MultiplyVector4Projection(mat4_t projectionMatrix, vec4_t vector);
 mat4_t matrix4MultiplyMatrix4(mat4_t firstMatrix, mat4_t secondMatrix);

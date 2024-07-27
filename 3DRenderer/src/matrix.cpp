@@ -79,7 +79,7 @@ mat4_t makePerspectiveProjectionMatrix(float aspectRatio, float fieldOfView, flo
 	return perspectiveProjectionMatrix;
 }
 
-vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)
+vec4_t matrix4MultiplyVector4(mat4_t matrix, vec4_t vector)
 {
 	vec4_t resultingVector;
 	resultingVector.x = matrix.m[0][0] * vector.x + matrix.m[0][1] * vector.y + matrix.m[0][2] * vector.z + matrix.m[0][3] * vector.w;
@@ -87,6 +87,21 @@ vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)
 	resultingVector.z = matrix.m[2][0] * vector.x + matrix.m[2][1] * vector.y + matrix.m[2][2] * vector.z + matrix.m[2][3] * vector.w;
 	resultingVector.w = matrix.m[3][0] * vector.x + matrix.m[3][1] * vector.y + matrix.m[3][2] * vector.z + matrix.m[3][3] * vector.w;
 	return resultingVector;
+}
+
+vec4_t matrix4MultiplyVector4Projection(mat4_t projectionMatrix, vec4_t vector)
+{
+	vec4_t result = matrix4MultiplyVector4(projectionMatrix, vector);
+
+	//perform perspective divide with original z-value that is now stored in w in vector
+	if (result.w != 0.0f)
+	{
+		result.x /= result.w;
+		result.y /= result.w;
+		result.z /= result.w;
+
+	}
+	return result;
 }
 
 mat4_t matrix4MultiplyMatrix4(mat4_t firstMatrix, mat4_t secondMatrix)
