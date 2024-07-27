@@ -86,6 +86,7 @@ void update()
 	//changing the scale of the mesh
 	mesh.scale.x += 0.02;
 	mesh.scale.y += 0.01;
+	mesh.scale.z =  5.f;
 
 	//changing the translation of the mesh
 	mesh.translation.x += 0.01;

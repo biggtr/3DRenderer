@@ -67,6 +67,18 @@ mat4_t makeRotationMatrixInZ(float angle)
 	return zRotationMatrix;
 }
 
+mat4_t makePerspectiveProjectionMatrix(float aspectRatio, float fieldOfView, float zNear, float zFar)
+{
+	float lambda = zFar / (zFar - zNear);
+	mat4_t perspectiveProjectionMatrix{ {{}} };
+	perspectiveProjectionMatrix.m[0][0] = aspectRatio * fieldOfView;
+	perspectiveProjectionMatrix.m[1][1] = fieldOfView;
+	perspectiveProjectionMatrix.m[2][2] = lambda;
+	perspectiveProjectionMatrix.m[2][3] = -lambda * zNear;
+	perspectiveProjectionMatrix.m[3][2] = 1.f;
+	return perspectiveProjectionMatrix;
+}
+
 vec4_t multiplyMatrixVector(mat4_t matrix, vec4_t vector)
 {
 	vec4_t resultingVector;
