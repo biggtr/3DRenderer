@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\display.cpp" />
+    <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\mesh.cpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\display.h" />
+    <ClInclude Include="src\light.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\triangle.h" />
