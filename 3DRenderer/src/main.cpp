@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "matrix.h"
 #include <math.h>
+#include "light.h"
 //const int N_POINTS (9*9*9)
 //vec3_t cube_points[N_POINTS];
 //
@@ -146,32 +147,32 @@ void update()
 			transformedVertices[j] = transformedVertex;
 
 		}
+		
+		// Check for back culling
+		vec3_t vectorA = vec3FromVec4(transformedVertices[0]);
+		vec3_t vectorB = vec3FromVec4(transformedVertices[1]);
+		vec3_t vectorC = vec3FromVec4(transformedVertices[2]);
+
+		//Get difference between vector b-a , c-a
+		vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
+		vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
+		vec3NormalizVector(vectorAB);
+		vec3NormalizVector(vectorAC);
+
+		//Get normal value using the crossProduct between ab ac vectors
+		vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
+
+		//Normalize normal vector to get just the direction of the normal 
+		vec3NormalizVector(normal);
+
+		//Get vector from a to camera position #calculating distance between camera and position a 
+		vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
+
+		//Getting dot product between camera vector and normal 
+		float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
+
 		if (cullingMethod == CullingMethod::BACKFACE_CULLING)
 		{
-			// Check for back culling
-			vec3_t vectorA = vec3FromVec4(transformedVertices[0]);
-			vec3_t vectorB = vec3FromVec4(transformedVertices[1]);
-			vec3_t vectorC = vec3FromVec4(transformedVertices[2]);
-
-			//Get difference between vector b-a , c-a
-			vec3_t vectorAB = vec3Subtraction(vectorB, vectorA);
-			vec3_t vectorAC = vec3Subtraction(vectorC, vectorA);
-			vec3NormalizVector(vectorAB);
-			vec3NormalizVector(vectorAC);
-
-			//Get normal value using the crossProduct between ab ac vectors
-			vec3_t normal = vec3CrossProduct(vectorAB, vectorAC); // Left Handed game engine ,start with ab then ac
-
-			//Normalize normal vector to get just the direction of the normal 
-			vec3NormalizVector(normal);
-
-			//Get vector from a to camera position #calculating distance between camera and position a 
-			vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
-
-			//Getting dot product between camera vector and normal 
-			float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
-
-
 			//Checks if dot product is less than 0 then skip and dont project
 			if (cameraRayDotProductValue < 0)
 			{
@@ -201,9 +202,13 @@ void update()
 		projectedTriangle.points[1] = { projectedPoints[1].x,projectedPoints[1].y };
 		projectedTriangle.points[2] = { projectedPoints[2].x,projectedPoints[2].y };
 
+		//getting light intensity factor to color the faces of the triangle 
+		float lightIntensityFactor = vec3DotProduct(normal, light.direction);
+
 		//getting the average of all of the z vertices to sort triangles in ascending order
 		projectedTriangle.avgDepth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3;
 
+		projectedTriangle.color = light_apply_intensity(0xFF0000FF, lightIntensityFactor);
 		trianglesToRender.push_back(projectedTriangle);
 
 		//sorting triangles based on z axis (Depth) to render triangles from back to front 
@@ -231,11 +236,11 @@ void render()
 
 		//draws unfilled Triangle (wireframe)
 		if(renderMethod == RenderMethod::WIREFRAME || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE)
-			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y,  0xFF0000FF);
+			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, triangle.color );
 		
 		//draws filled Triangle with color
 		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )
-			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
+			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, triangle.color);
 	}
 	trianglesToRender.clear();
 	renderColorBuffer();

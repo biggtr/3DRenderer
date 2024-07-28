@@ -22,6 +22,7 @@ struct mesh_t
 	vec3_t rotation{};
 	vec3_t scale{};
 	vec3_t translation{};
+	
 };
 extern mesh_t mesh;
 
