@@ -15,7 +15,7 @@
 std::vector<triangle_t> trianglesToRender{};
 vec3_t cameraPosition{ 0,0,0 };
 
-int previousFrameTime;
+int previousFrameTime{};
 int timeToWait;
 bool isRunning = false; 
 mat4_t perspectiveProjectionMatrix;
@@ -93,15 +93,11 @@ void update()
 	
 
 	
-
-	//Changing the rotation of the mesh 
+	// Change the mesh scale, rotation, and translation values per animation frame
 	mesh.rotation.x += 0.01;
 	mesh.rotation.y += 0.02;
 	mesh.rotation.z += 0.03;
-
-	//changing the translation of the mesh
-	/*mesh.translation.x += 0.01;*/
-	mesh.translation.z = 15.f;
+	mesh.translation.z = 10.0;
 
 
 	
@@ -171,7 +167,7 @@ void update()
 		vec3_t cameraRay = vec3Subtraction(cameraPosition, vectorA);
 
 		//Getting dot product between camera vector and normal 
-		float cameraRayDotProductValue = vec3DotProduct(cameraRay, normal);
+		float cameraRayDotProductValue = vec3DotProduct(normal, cameraRay );
 
 		if (cullingMethod == CullingMethod::BACKFACE_CULLING)
 		{
@@ -182,7 +178,6 @@ void update()
 			}
 
 		}
-		triangle_t projectedTriangle;
 
 		vec4_t projectedPoints[3];
 		//Looping all 3 vertices to perform projection
@@ -194,24 +189,31 @@ void update()
 			//scaling point into the viewport
 			projectedPoints[j].x *= (windowWidth / 2.f);
 			projectedPoints[j].y *= (windowHeight / 2.f);
-
+			//inverting y axis to its original position
+			projectedPoints[j].y *= -1;
 			//Translate the vertex point to the middle of the screen 
 			projectedPoints[j].x += (windowWidth / 2.f);
 			projectedPoints[j].y += (windowHeight / 2.f);
 		
 		}
-		projectedTriangle.points[0] = {projectedPoints[0].x,projectedPoints[0].y};
-		projectedTriangle.points[1] = { projectedPoints[1].x,projectedPoints[1].y };
-		projectedTriangle.points[2] = { projectedPoints[2].x,projectedPoints[2].y };
+		// Calculate the average depth for each face based on the vertices after transformation
+		float avg_depth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3.0;
 
-		//getting light intensity factor to color the faces of the triangle 
+		// Calculate the shade intensity based on how aliged is the face normal and the opposite of the light direction
 		float lightIntensityFactor = -vec3DotProduct(normal, light.direction);
 
-		//getting the average of all of the z vertices to sort triangles in ascending order
-		projectedTriangle.avgDepth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3;
+		// Calculate the triangle color based on the light angle
+		uint32_t triangleColor = light_apply_intensity(meshFace.color, lightIntensityFactor);
 
-		uint32_t triangleColor = light_apply_intensity(meshFace.color , lightIntensityFactor);
-		projectedTriangle.color = triangleColor;
+		triangle_t projectedTriangle = {
+			{
+				{projectedPoints[0].x, projectedPoints[0].y },
+				{projectedPoints[1].x, projectedPoints[1].y },
+				{projectedPoints[2].x, projectedPoints[2].y },
+			},
+			triangleColor,	
+			avg_depth
+		};
 		trianglesToRender.push_back(projectedTriangle);
 
 		//sorting triangles based on z axis (Depth) to render triangles from back to front 
@@ -238,7 +240,7 @@ void render()
 
 		//draws unfilled Triangle (wireframe)
 		if(renderMethod == RenderMethod::WIREFRAME || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE)
-			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
+			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFF00);
 		
 		//draws filled Triangle with color
 		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )

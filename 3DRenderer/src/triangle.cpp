@@ -2,37 +2,36 @@
 #include "display.h"
 void fillFlatBottom(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
-	//find two sloped from the triangle sides 
-	float leftSideSlope = (float)(x1 - x0) / (y1 - y0);
-	float rightSideSlope = (float)(x2 - x0) / (y2 - y0);
+	// Find the two slopes (two triangle legs)
+	float inv_slope_1 = (float)(x1 - x0) / (y1 - y0);
+	float inv_slope_2 = (float)(x2 - x0) / (y2 - y0);
 
-	//the point to start drawing lines
-	float xStart{ (float)x0 }, xEnd{ (float)x0};
+	// Start x_start and x_end from the top vertex (x0,y0)
+	float x_start = x0;
+	float x_end = x0;
 
-	for (int height = y0; height <= y2; height++)
-	{
-		drawLine(xStart, height, xEnd, height, color);
-		//increament starting point with slope value
-		xStart += leftSideSlope;
-		xEnd += rightSideSlope;
+	// Loop all the scanlines from top to bottom
+	for (int y = y0; y <= y2; y++) {
+		drawLine(x_start, y, x_end, y, color);
+		x_start += inv_slope_1;
+		x_end += inv_slope_2;
 	}
 }
 void fillFlatTop(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
-	//find two sloped from the triangle sides 
-	float leftSideSlope = (float)(x2 - x0) / (y2 - y0);
-	float rightSideSlope = (float)(x2 - x1) / (y2 - y1);
+	// Find the two slopes (two triangle legs)
+	float inv_slope_1 = (float)(x2 - x0) / (y2 - y0);
+	float inv_slope_2 = (float)(x2 - x1) / (y2 - y1);
 
-	//the point to start drawing lines
-	float xStart{ (float)x2 }, xEnd{ (float)x2 };
+	// Start x_start and x_end from the bottom vertex (x2,y2)
+	float x_start = x2;
+	float x_end = x2;
 
-	for (int height = y2; height >= y0; height--)
-	{
-		drawLine(xStart, height, xEnd, height, color);
-
-		//increament starting point with slope value
-		xStart -= leftSideSlope;
-		xEnd -= rightSideSlope;
+	// Loop all the scanlines from bottom to top
+	for (int y = y2; y >= y0; y--) {
+		drawLine(x_start, y, x_end, y, color);
+		x_start -= inv_slope_1;
+		x_end -= inv_slope_2;
 	}
 }
 
@@ -70,36 +69,15 @@ void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t
 	}
 	else
 	{
-		//calcualting midpoint of triangle 
-		int xMidPoint = (y1 - y0) * (x2 - x0) / (y2 - y0) + x0;
-		int yMidPoint = y1;
+		// Calculate the new vertex (Mx,My) using triangle similarity
+		int My = y1;
+		int Mx = (((x2 - x0) * (y1 - y0)) / (y2 - y0)) + x0;
 
-		fillFlatBottom(x0,y0,x1,y1,xMidPoint,yMidPoint,color);
-		fillFlatTop(x1,y1,xMidPoint,yMidPoint,x2,y2,color);
+		fillFlatBottom(x0, y0, x1, y1, Mx, My, color);
+		fillFlatTop(x1, y1, Mx, My, x2, y2, color);
 	}
 }
 
-void drawLine(int x0, int y0, int x1, int y1, uint32_t color)
-{
-	int deltaX = x1 - x0;
-	int deltaY = y1 - y0;
-
-	int sideLength = std::abs(deltaY) >= std::abs(deltaX) ? std::abs(deltaY) : std::abs(deltaX);
-
-	float xIncreament = deltaX / (float)sideLength;
-
-	float yIncreament = deltaY / (float)sideLength;
-
-	float currentX = x0;
-	float currentY = y0;
-
-	for (int i = 0; i <= sideLength; i++)
-	{
-		drawPixel(std::round(currentX), std::round(currentY), color);
-		currentX += xIncreament;
-		currentY += yIncreament;
-	}
-}
 void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
 	drawLine(x0, y0, x1, y1, color);

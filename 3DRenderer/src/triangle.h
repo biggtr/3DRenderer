@@ -14,8 +14,8 @@ struct face_t
 struct triangle_t
 {
 	vec2_t points[3];
-	float avgDepth;
 	uint32_t color;
+	float avgDepth;
 };
 
 void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);

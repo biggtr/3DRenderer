@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 
-#define FPS 30 
+#define FPS 60 
 #define FRAME_TARGET_TIME  (1000/FPS)  // 1000 is how many millisecond in one second
 
 
