@@ -34,6 +34,11 @@ void setup()
 	float zFar = 100.f;
 	float aspectRation = (float)windowHeight / (float)windowWidth;
 
+	//changing the scale of the mesh
+	mesh.scale.x = 1.f;
+	mesh.scale.y = 1.f;
+	mesh.scale.z = 1.f;
+
 	//make perspectiveProjectionMatrix that will be multiplied with vertices to project the vertices
 	perspectiveProjectionMatrix = makePerspectiveProjectionMatrix(aspectRation, fovFactor, zNear, zFar);
 	//loadCubeMeshData();
@@ -87,19 +92,16 @@ void update()
 
 	
 
-	//changing the scale of the mesh
-	mesh.scale.x = 5.f;
-	mesh.scale.y = 5.f;
-	mesh.scale.z =  5.f;
+	
 
 	//Changing the rotation of the mesh 
 	mesh.rotation.x += 0.01;
-	//mesh.rotation.y += 0.01;
-	//mesh.rotation.z += 0.01;
+	mesh.rotation.y += 0.02;
+	mesh.rotation.z += 0.03;
 
 	//changing the translation of the mesh
 	/*mesh.translation.x += 0.01;*/
-	mesh.translation.z = 25;
+	mesh.translation.z = 15.f;
 
 
 	
@@ -203,12 +205,13 @@ void update()
 		projectedTriangle.points[2] = { projectedPoints[2].x,projectedPoints[2].y };
 
 		//getting light intensity factor to color the faces of the triangle 
-		float lightIntensityFactor = vec3DotProduct(normal, light.direction);
+		float lightIntensityFactor = -vec3DotProduct(normal, light.direction);
 
 		//getting the average of all of the z vertices to sort triangles in ascending order
 		projectedTriangle.avgDepth = (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3;
 
-		projectedTriangle.color = light_apply_intensity(0xFF0000FF, lightIntensityFactor);
+		uint32_t triangleColor = light_apply_intensity(meshFace.color , lightIntensityFactor);
+		projectedTriangle.color = triangleColor;
 		trianglesToRender.push_back(projectedTriangle);
 
 		//sorting triangles based on z axis (Depth) to render triangles from back to front 
@@ -221,7 +224,6 @@ void update()
 }
 void render()
 {
-	clearColorBuffer(0xFF000000);
 	drawGrid();
 
 	//renders all triangles that passed back face culling check
@@ -236,14 +238,18 @@ void render()
 
 		//draws unfilled Triangle (wireframe)
 		if(renderMethod == RenderMethod::WIREFRAME || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE)
-			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, triangle.color );
+			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFFFF);
 		
 		//draws filled Triangle with color
 		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )
 			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, triangle.color);
 	}
 	trianglesToRender.clear();
+
 	renderColorBuffer();
+
+	clearColorBuffer(0xFF000000);
+
 	SDL_RenderPresent(renderer);
 }
 

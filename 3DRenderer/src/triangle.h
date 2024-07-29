@@ -21,3 +21,4 @@ struct triangle_t
 void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
 void fillFlatBottom(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
 void fillFlatTop(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color);
+void drawLine(int x0, int y0, int x1, int y1, uint32_t color);

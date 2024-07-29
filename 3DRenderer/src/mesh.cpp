@@ -102,6 +102,7 @@ void loadObjFileData(std::string fileName)
 			std::cout << charIdentifier << v1 << v2 << v3 << std::endl;
 
 			face_t face = { v1,v2,v3 };
+			face.color = 0xFFFFFFFF;
 			mesh.faces.push_back(face);
 		}
 	}

@@ -78,3 +78,32 @@ void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t
 		fillFlatTop(x1,y1,xMidPoint,yMidPoint,x2,y2,color);
 	}
 }
+
+void drawLine(int x0, int y0, int x1, int y1, uint32_t color)
+{
+	int deltaX = x1 - x0;
+	int deltaY = y1 - y0;
+
+	int sideLength = std::abs(deltaY) >= std::abs(deltaX) ? std::abs(deltaY) : std::abs(deltaX);
+
+	float xIncreament = deltaX / (float)sideLength;
+
+	float yIncreament = deltaY / (float)sideLength;
+
+	float currentX = x0;
+	float currentY = y0;
+
+	for (int i = 0; i <= sideLength; i++)
+	{
+		drawPixel(std::round(currentX), std::round(currentY), color);
+		currentX += xIncreament;
+		currentY += yIncreament;
+	}
+}
+void drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
+{
+	drawLine(x0, y0, x1, y1, color);
+	drawLine(x1, y1, x2, y2, color);
+	drawLine(x2, y2, x0, y0, color);
+
+}

@@ -2,8 +2,7 @@
 
 
 
-Light light = 
-{ {0,0,1} };
+Light light = { 1,0,0 };
 
 
 uint32_t light_apply_intensity(uint32_t original_color, float percentage_factor) 
