@@ -47,21 +47,21 @@ bool initializeWindow()
 }
 
 
-void drawLine(int x0, int y0, int x1, int y1, uint32_t color)
+void drawLine(int x1, int y1, int x2, int y2, uint32_t color)
 {
-	int deltaX = x1 - x0;
-	int deltaY = y1 - y0;
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
 
-	int sideLength = std::abs(deltaY) >= std::abs(deltaX) ? std::abs(deltaY) : std::abs(deltaX);
+	int steps = std::abs(deltaY) >= std::abs(deltaX) ? std::abs(deltaY) : std::abs(deltaX);
 
-	float xIncreament = deltaX / (float)sideLength;
+	float xIncreament = deltaX / (float)steps;
 
-	float yIncreament = deltaY / (float)sideLength;
+	float yIncreament = deltaY / (float)steps;
 
-	float currentX = x0;
-	float currentY = y0;
+	float currentX = x1;
+	float currentY = y1;
 
-	for (int i = 0; i <= sideLength; i++)
+	for (int i = 0; i <= steps; i++)
 	{
 		drawPixel(std::round(currentX), std::round(currentY), color);
 		currentX += xIncreament;

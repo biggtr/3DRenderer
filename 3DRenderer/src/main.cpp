@@ -42,7 +42,7 @@ void setup()
 	//make perspectiveProjectionMatrix that will be multiplied with vertices to project the vertices
 	perspectiveProjectionMatrix = makePerspectiveProjectionMatrix(aspectRation, fovFactor, zNear, zFar);
 	//loadCubeMeshData();
-	loadObjFileData("./assets/cube.obj");
+	loadObjFileData("./assets/f22.obj");
 }
 
 void processInput()
@@ -94,10 +94,10 @@ void update()
 
 	
 	// Change the mesh scale, rotation, and translation values per animation frame
-	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.02;
-	mesh.rotation.z += 0.03;
-	mesh.translation.z = 10.0;
+	mesh.rotation.x += 0.001;
+	mesh.rotation.y += 0.01;
+	mesh.rotation.z += 0.01;
+	mesh.translation.z = 5.f;
 
 
 	

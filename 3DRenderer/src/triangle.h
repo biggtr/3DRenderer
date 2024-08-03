@@ -1,13 +1,17 @@
 #pragma once
 #include "vector.h"
 #include <iostream>
-
+#include "texture.h"
 
 struct face_t 
 {
 	int a;
 	int b;
 	int c;
+	tex2_t aUV;
+	tex2_t bUV;
+	tex2_t cUV;
+
 	uint32_t color;
 };
 
