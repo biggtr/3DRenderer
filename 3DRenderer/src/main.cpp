@@ -41,8 +41,8 @@ void setup()
 
 	//make perspectiveProjectionMatrix that will be multiplied with vertices to project the vertices
 	perspectiveProjectionMatrix = makePerspectiveProjectionMatrix(aspectRation, fovFactor, zNear, zFar);
-	//loadCubeMeshData();
-	loadObjFileData("./assets/f22.obj");
+	loadCubeMeshData();
+	//loadObjFileData("./assets/f22.obj");
 }
 
 void processInput()
@@ -66,6 +66,10 @@ void processInput()
 				renderMethod = RenderMethod::FILL_TRIANGLE;
 			if (event.key.keysym.sym == SDLK_3)
 				renderMethod = RenderMethod::FILL_TRIANGLE_WIRE;
+			if (event.key.keysym.sym == SDLK_4)
+				renderMethod = RenderMethod::TEXTURED_TRIANGLE;
+			if (event.key.keysym.sym == SDLK_5)
+				renderMethod = RenderMethod::TEXTURED_TRIANGLE_WIRE;
 			if (event.key.keysym.sym == SDLK_b)
 			{	
 				cullingMethod = CullingMethod::BACKFACE_CULLING;
@@ -211,7 +215,12 @@ void update()
 				{projectedPoints[1].x, projectedPoints[1].y },
 				{projectedPoints[2].x, projectedPoints[2].y },
 			},
-			triangleColor,	
+			{
+				{meshFace.a_uv.u,meshFace.a_uv.v},
+				{meshFace.b_uv.u,meshFace.b_uv.v},
+				{meshFace.c_uv.u,meshFace.c_uv.v}
+			},
+			triangleColor,
 			avg_depth
 		};
 		trianglesToRender.push_back(projectedTriangle);
@@ -242,6 +251,16 @@ void render()
 		if(renderMethod == RenderMethod::WIREFRAME || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE)
 			drawTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, 0xFFFFFF00);
 		
+		//draws textured triangle
+		if (renderMethod == RenderMethod::TEXTURED_TRIANGLE || renderMethod == RenderMethod::TEXTURED_TRIANGLE_WIRE)
+		{
+			drawTexturedTriangle
+			(
+
+				triangle.points[0].x, triangle.points[0].y, triangle.textureCoordinates[0].u, triangle.textureCoordinates[0].v,
+				triangle.points[1].x, triangle.points[1].y, triangle.textureCoordinates[1].u, triangle.textureCoordinates[1].v,
+				triangle.points[2].x, triangle.points[2].y, triangle.textureCoordinates[2].u, triangle.textureCoordinates[2].v);
+		}
 		//draws filled Triangle with color
 		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )
 			drawFilledTriangle(triangle.points[0].x, triangle.points[0].y, triangle.points[1].x, triangle.points[1].y, triangle.points[2].x, triangle.points[2].y, triangle.color);

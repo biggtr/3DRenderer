@@ -4,55 +4,50 @@ mesh_t mesh =
 {
 	{},{},{0,0,0}
 };
-//vec3_t cubeVertices[N_CUBE_VERTICES] =
-//{
-//	{-1,-1,-1},
-//	{-1,1,-1},
-//	{1,1,-1},
-//	{1,-1,-1},
-//	{1,1,1},
-//	{1,-1,1},
-//	{-1,1,1},
-//	{-1,-1,1},
-//
-//};
-//
-//face_t cubeFaces[N_CUBE_FACES] =
-//{
-//	{1,2,3},
-//	{1,3,4},
-//
-//	{4,3,5},
-//	{4,5,6},
-//
-//	{6,5,7},
-//	{6,7,8},
-//
-//	{8,7,2},
-//	{8,2,1},
-//
-//	{2,7,5},
-//	{2,5,3},
-//
-//	{6,8,1},
-//	{6,1,4},
-//
-//};
+vec3_t cubeVertices[N_CUBE_VERTICES] =
+{
+	{-1,-1,-1},
+	{-1,1,-1},
+	{1,1,-1},
+	{1,-1,-1},
+	{1,1,1},
+	{1,-1,1},
+	{-1,1,1},
+	{-1,-1,1},
+
+};
+
+face_t cubeFaces[N_CUBE_FACES] =
+{
+	{ 1,   2,  3, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 1,   3,  4, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF },
+	{ 4,   3,  5, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 4,   5,  6, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF },
+	{ 6,   5,  7, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 6,   7,  8, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF },
+
+	{ 8,   7,  2, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 8,   2,  1, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF },
+	{ 2,   7,  5, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 2,   5,  3, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF },
+	{ 6,   8,  1, { 0, 0 },  { 0, 1 },  { 1, 1 },  0xFFFFFFFF },
+	{ 6,   1,  4, { 0, 0 },  { 1, 1 },  { 1, 0 },  0xFFFFFFFF }
+};
 
 
-//void loadCubeMeshData()
-//{
-//	for (int i = 0; i < N_CUBE_FACES; i++)
-//	{
-//		face_t cubeFace = cubeFaces[i];
-//		mesh.faces.push_back(cubeFace);
-//	}
-//	for (int i = 0; i < N_CUBE_VERTICES; i++)
-//	{
-//		vec3_t cubeVertice = cubeVertices[i];
-//		mesh.vertices.push_back(cubeVertice);
-//	}
-//}
+void loadCubeMeshData()
+{
+	for (int i = 0; i < N_CUBE_FACES; i++)
+	{
+		face_t cubeFace = cubeFaces[i];
+		mesh.faces.push_back(cubeFace);
+	}
+	for (int i = 0; i < N_CUBE_VERTICES; i++)
+	{
+		vec3_t cubeVertice = cubeVertices[i];
+		mesh.vertices.push_back(cubeVertice);
+	}
+}
 
 void loadObjFileData(std::string fileName)
 {
