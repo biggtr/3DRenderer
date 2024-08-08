@@ -6,10 +6,10 @@
 #include "matrix.h"
 #include <math.h>
 #include "light.h"
-//const int N_POINTS (9*9*9)
-//vec3_t cube_points[N_POINTS];
-//
-//vec2_t projected_points[N_POINTS];
+
+const int N_POINTS(9 * 9 * 9);
+vec3_t cube_points[N_POINTS];
+vec2_t projected_points[N_POINTS];
 
 
 std::vector<triangle_t> trianglesToRender{};
@@ -39,6 +39,7 @@ void setup()
 	mesh.scale.y = 1.f;
 	mesh.scale.z = 1.f;
 
+	meshTexture = (uint32_t*)REDBRICK_TEXTURE;
 	//make perspectiveProjectionMatrix that will be multiplied with vertices to project the vertices
 	perspectiveProjectionMatrix = makePerspectiveProjectionMatrix(aspectRation, fovFactor, zNear, zFar);
 	loadCubeMeshData();
@@ -259,7 +260,7 @@ void render()
 
 				triangle.points[0].x, triangle.points[0].y, triangle.textureCoordinates[0].u, triangle.textureCoordinates[0].v,
 				triangle.points[1].x, triangle.points[1].y, triangle.textureCoordinates[1].u, triangle.textureCoordinates[1].v,
-				triangle.points[2].x, triangle.points[2].y, triangle.textureCoordinates[2].u, triangle.textureCoordinates[2].v);
+				triangle.points[2].x, triangle.points[2].y, triangle.textureCoordinates[2].u, triangle.textureCoordinates[2].v,meshTexture);
 		}
 		//draws filled Triangle with color
 		if(renderMethod == RenderMethod::FILL_TRIANGLE || renderMethod == RenderMethod::FILL_TRIANGLE_WIRE )

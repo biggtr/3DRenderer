@@ -7,5 +7,5 @@ struct tex2_t
 };
 
 extern int textureWidth,textureHeight;
-
-extern const uint8_t REDBRICK_TEXTURE[64];
+extern const uint8_t REDBRICK_TEXTURE[100000];
+extern uint32_t* meshTexture;

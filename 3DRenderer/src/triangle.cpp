@@ -27,7 +27,7 @@ void fillFlatTop(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 	float x_start = x2;
 	float x_end = x2;
 
-	// Loop all the scanlines from bottom to top
+	// Loop all the scan lines from bottom to top
 	for (int y = y2; y >= y0; y--) {
 		drawLine(x_start, y, x_end, y, color);
 		x_start -= inv_slope_1;
@@ -35,11 +35,54 @@ void fillFlatTop(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 	}
 }
 
-void drawTexturedTriangle(int x0, int y0, float u0, float v0, int x1, int y1, float u1, float v1, int x2, int y2, float u2, float v2)
+void drawTexturedTriangle(int x0, int y0, float u0, float v0, int x1, int y1, float u1, float v1, int x2, int y2, float u2, float v2, uint32_t* texture)
 {
+	//ugly sorting to make sure that y0 < y1 < y2
+	if (y0 > y1)
+	{
+		std::swap(y0, y1);
+		std::swap(x0, x1);
+		std::swap(u0, u1);
+		std::swap(v0, v1);
 
+	}
+	if (y1 > y2)
+	{
+		std::swap(y1, y2);
+		std::swap(x1, x2);
+		std::swap(u1, u2);
+		std::swap(v1, v2);
+
+
+	}
+	if (y0 > y1)
+	{
+		std::swap(y0, y1);
+		std::swap(x0, x1);
+		std::swap(u0, u1);
+		std::swap(v0, v1);
+
+	}
+	//Render the upper part of the triangle (flat bottom)
+	float leftLegSlope{}, rightLegSlope{};
+	if (y1 - y0 != 0)
+		float leftLegSlope = (float)(x1 - x2) / std::abs(y1 - y0);
+	if (y2 - y0 != 0)
+		float rightLegSlope = (float)(x2 - x0) / std::abs(y2 - y0);
+	for (int y = y0; y <= y1; y++) 
+	{
+		int x_start = x1 + (y - y1) * leftLegSlope;
+		int x_end = x0 + (y - y0) * rightLegSlope;
+
+		if (x_end < x_start) {
+			std::swap(x_start, x_end); // swap if x_start is to the right of x_end
+		}
+		for (int x = x_start; x < x_end; x++)
+		{
+			drawPixel(x, y, 0xFFFFFFFF);
+		}
+	}
 }
-
 void drawFilledTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color)
 {
 	//ugly sorting solution 
